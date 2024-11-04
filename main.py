@@ -50,6 +50,7 @@ wait(2000)
 
 frente(motor_Esquerda, motor_Direita, posicao, sensor_Cor)
 ev3.speaker.beep()
+
 wait(2000)
 
 direita(motor_Esquerda, motor_Direita, gyro, posicao, sensor_Cor)
