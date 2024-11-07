@@ -14,12 +14,13 @@ def trocarOrientacao(direcao, posicao):
 
 def direita(motore, motord, gyro, posicao, sensor_cor):
     if posicao[2] == 1 and posicao[0] <= 5:
-        while gyro.angle() <= 90:
-            motore.run(-250)
-            motord.run(250)
-        gyro.reset_angle(0)
+        while gyro.angle() <= 85:
+            motore.run(-150)
+            motord.run(150)
         motore.brake()
         motord.brake()
+        gyro.reset_angle(0)
+        wait(1000)   
         motore.run(250)
         motord.run(250)
         while sensor_cor.color() != Color.BLACK:
@@ -40,12 +41,14 @@ def direita(motore, motord, gyro, posicao, sensor_cor):
         posicao[0] += 1
         trocarOrientacao("D", posicao)
     elif posicao[2] == 2 and posicao[1] > 1:
-        while gyro.angle() <= 90:
-            motore.run(-250)
-            motord.run(250)
+        while gyro.angle() <= 85:
+            motore.run(-150)
+            motord.run(150)
         gyro.reset_angle(0)
+        
         motore.brake()
         motord.brake()
+        wait(1000) 
         motore.run(250)
         motord.run(250)
         while sensor_cor.color() != Color.BLACK:
@@ -59,19 +62,21 @@ def direita(motore, motord, gyro, posicao, sensor_cor):
                 motore.brake()
                 motord.brake()
                 return
-                break
+                
         wait(2200)
         motore.brake()
         motord.brake()
         posicao[1] -= 1
         trocarOrientacao("D", posicao)
     elif posicao[2] == 3 and posicao[0] > 1:
-        while gyro.angle() <= 90:
-            motore.run(-250)
-            motord.run(250)
+        while gyro.angle() <= 85:
+            motore.run(-150)
+            motord.run(150)
         gyro.reset_angle(0)
+        
         motore.brake()
         motord.brake()
+        wait(1000) 
         motore.run(250)
         motord.run(250)
         while sensor_cor.color() != Color.BLACK:
@@ -85,19 +90,21 @@ def direita(motore, motord, gyro, posicao, sensor_cor):
                 motore.brake()
                 motord.brake()
                 return
-                break
+                
         wait(2200)
         motore.brake()
         motord.brake()
         posicao[0] -= 1
         trocarOrientacao("D", posicao)
     elif posicao[2] == 4 and posicao[1] <= 5:
-        while gyro.angle() <= 90:
-            motore.run(-250)
-            motord.run(250)
+        while gyro.angle() <= 85:
+            motore.run(-150)
+            motord.run(150)
         gyro.reset_angle(0)
+        
         motore.brake()
         motord.brake()
+        wait(1000) 
         motore.run(250)
         motord.run(250)
         while sensor_cor.color() != Color.BLACK:
@@ -120,12 +127,14 @@ def direita(motore, motord, gyro, posicao, sensor_cor):
 
 def esquerda(motore, motord, gyro, posicao, sensor_cor):
     if posicao[2] == 1 and posicao[0] > 1:
-        while gyro.angle() >= -90:
-            motore.run(250)
-            motord.run(-250)
+        while gyro.angle() >= -87:
+            motore.run(150)
+            motord.run(-150)
         gyro.reset_angle(0)
+
         motore.brake()
         motord.brake()
+        wait(1000) 
         motore.run(250)
         motord.run(250)
         while sensor_cor.color() != Color.BLACK:
@@ -145,12 +154,13 @@ def esquerda(motore, motord, gyro, posicao, sensor_cor):
         posicao[0] -= 1
         trocarOrientacao("E", posicao)
     elif posicao[2] == 2 and posicao[1] <= 5:
-        while gyro.angle() >= -90:
-            motore.run(250)
-            motord.run(-250)
+        while gyro.angle() >= -87:
+            motore.run(150)
+            motord.run(-150)
         gyro.reset_angle(0)
         motore.brake()
         motord.brake()
+        wait(1000) 
         motore.run(250)
         motord.run(250)
         while sensor_cor.color() != Color.BLACK:
@@ -170,12 +180,13 @@ def esquerda(motore, motord, gyro, posicao, sensor_cor):
         posicao[1] += 1
         trocarOrientacao("E", posicao)
     elif posicao[2] == 3 and posicao[0] <= 5:
-        while gyro.angle() >= -90:
-            motore.run(250)
-            motord.run(-250)
+        while gyro.angle() >= -87:
+            motore.run(150)
+            motord.run(-150)
         gyro.reset_angle(0)
         motore.brake()
         motord.brake()
+        wait(1000) 
         motore.run(250)
         motord.run(250)
         while sensor_cor.color() != Color.BLACK:
@@ -195,12 +206,13 @@ def esquerda(motore, motord, gyro, posicao, sensor_cor):
         posicao[0] += 1
         trocarOrientacao("E", posicao)
     elif posicao[2] == 4 and posicao[1] > 1:
-        while gyro.angle() >= -90:
-            motore.run(250)
-            motord.run(-250)
+        while gyro.angle() >= -87:
+            motore.run(150)
+            motord.run(-150)
         gyro.reset_angle(0)
         motore.brake()
         motord.brake()
+        wait(1000) 
         motore.run(250)
         motord.run(250)
         while sensor_cor.color() != Color.BLACK:
