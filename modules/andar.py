@@ -15,13 +15,13 @@ def trocarOrientacao(direcao, posicao):
 def direita(motore, motord, gyro, posicao, sensor_cor):
     if posicao[2] == 1 and posicao[0] <= 5:
         while gyro.angle() <= 90:
-            motore.run(-250)
-            motord.run(250)
+            motore.run(-100)
+            motord.run(100)
         gyro.reset_angle(0)
         motore.brake()
         motord.brake()
-        motore.run(250)
-        motord.run(250)
+        motore.run(180)
+        motord.run(180)
         while sensor_cor.color() != Color.BLACK:
             if verificarExisteBarreiraQ(sensor_cor):
                 motore.brake()
@@ -41,13 +41,13 @@ def direita(motore, motord, gyro, posicao, sensor_cor):
         trocarOrientacao("D", posicao)
     elif posicao[2] == 2 and posicao[1] > 1:
         while gyro.angle() <= 90:
-            motore.run(-250)
-            motord.run(250)
+            motore.run(-100)
+            motord.run(100)
         gyro.reset_angle(0)
         motore.brake()
         motord.brake()
-        motore.run(250)
-        motord.run(250)
+        motore.run(180)
+        motord.run(180)
         while sensor_cor.color() != Color.BLACK:
             if verificarExisteBarreiraQ(sensor_cor):
                 motore.brake()
@@ -67,13 +67,13 @@ def direita(motore, motord, gyro, posicao, sensor_cor):
         trocarOrientacao("D", posicao)
     elif posicao[2] == 3 and posicao[0] > 1:
         while gyro.angle() <= 90:
-            motore.run(-250)
-            motord.run(250)
+            motore.run(-100)
+            motord.run(100)
         gyro.reset_angle(0)
         motore.brake()
         motord.brake()
-        motore.run(250)
-        motord.run(250)
+        motore.run(180)
+        motord.run(180)
         while sensor_cor.color() != Color.BLACK:
             if verificarExisteBarreiraQ(sensor_cor):
                 motore.brake()
@@ -93,13 +93,13 @@ def direita(motore, motord, gyro, posicao, sensor_cor):
         trocarOrientacao("D", posicao)
     elif posicao[2] == 4 and posicao[1] <= 5:
         while gyro.angle() <= 90:
-            motore.run(-250)
-            motord.run(250)
+            motore.run(-100)
+            motord.run(100)
         gyro.reset_angle(0)
         motore.brake()
         motord.brake()
-        motore.run(250)
-        motord.run(250)
+        motore.run(180)
+        motord.run(180)
         while sensor_cor.color() != Color.BLACK:
             if verificarExisteBarreiraQ(sensor_cor):
                 motore.brake()
@@ -121,13 +121,13 @@ def direita(motore, motord, gyro, posicao, sensor_cor):
 def esquerda(motore, motord, gyro, posicao, sensor_cor):
     if posicao[2] == 1 and posicao[0] > 1:
         while gyro.angle() >= -90:
-            motore.run(250)
-            motord.run(-250)
+            motore.run(100)
+            motord.run(-100)
         gyro.reset_angle(0)
         motore.brake()
         motord.brake()
-        motore.run(250)
-        motord.run(250)
+        motore.run(180)
+        motord.run(180)
         while sensor_cor.color() != Color.BLACK:
             if verificarExisteBarreiraQ(sensor_cor):
                 motore.brake()
@@ -146,13 +146,13 @@ def esquerda(motore, motord, gyro, posicao, sensor_cor):
         trocarOrientacao("E", posicao)
     elif posicao[2] == 2 and posicao[1] <= 5:
         while gyro.angle() >= -90:
-            motore.run(250)
-            motord.run(-250)
+            motore.run(100)
+            motord.run(-100)
         gyro.reset_angle(0)
         motore.brake()
         motord.brake()
-        motore.run(250)
-        motord.run(250)
+        motore.run(180)
+        motord.run(180)
         while sensor_cor.color() != Color.BLACK:
             if verificarExisteBarreiraQ(sensor_cor):
                 motore.brake()
@@ -171,13 +171,13 @@ def esquerda(motore, motord, gyro, posicao, sensor_cor):
         trocarOrientacao("E", posicao)
     elif posicao[2] == 3 and posicao[0] <= 5:
         while gyro.angle() >= -90:
-            motore.run(250)
-            motord.run(-250)
+            motore.run(100)
+            motord.run(-100)
         gyro.reset_angle(0)
         motore.brake()
         motord.brake()
-        motore.run(250)
-        motord.run(250)
+        motore.run(180)
+        motord.run(180)
         while sensor_cor.color() != Color.BLACK:
             if verificarExisteBarreiraQ(sensor_cor):
                 motore.brake()
@@ -196,13 +196,13 @@ def esquerda(motore, motord, gyro, posicao, sensor_cor):
         trocarOrientacao("E", posicao)
     elif posicao[2] == 4 and posicao[1] > 1:
         while gyro.angle() >= -90:
-            motore.run(250)
-            motord.run(-250)
+            motore.run(100)
+            motord.run(-100)
         gyro.reset_angle(0)
         motore.brake()
         motord.brake()
-        motore.run(250)
-        motord.run(250)
+        motore.run(180)
+        motord.run(180)
         while sensor_cor.color() != Color.BLACK:
             if verificarExisteBarreiraQ(sensor_cor):
                 motore.brake()
@@ -222,8 +222,8 @@ def esquerda(motore, motord, gyro, posicao, sensor_cor):
 
 def frente(motore, motord, posicao, sensor_cor):
     if posicao[2] == 1 and posicao[1] <= 5:
-        motore.run(250)
-        motord.run(250)
+        motore.run(180)
+        motord.run(180)
         while sensor_cor.color() != Color.BLACK:
             if verificarExisteBarreiraQ(sensor_cor):
                 motore.brake()
@@ -239,8 +239,8 @@ def frente(motore, motord, posicao, sensor_cor):
         motord.brake()
         posicao[1] += 1
     elif posicao[2] == 2 and posicao[0] <= 5:
-        motore.run(250)
-        motord.run(250)
+        motore.run(180)
+        motord.run(180)
         while sensor_cor.color() != Color.BLACK:
             if verificarExisteBarreiraQ(sensor_cor):
                 motore.brake()
@@ -256,8 +256,8 @@ def frente(motore, motord, posicao, sensor_cor):
         motord.brake()
         posicao[0] += 1
     elif posicao[2] == 3 and posicao[1] > 1:
-        motore.run(250)
-        motord.run(250)
+        motore.run(180)
+        motord.run(180)
         while sensor_cor.color() != Color.BLACK:
             if verificarExisteBarreiraQ(sensor_cor):
                 motore.brake()
@@ -273,8 +273,8 @@ def frente(motore, motord, posicao, sensor_cor):
         motord.brake()
         posicao[1] -= 1
     elif posicao[2] == 4 and posicao[0] > 1:
-        motore.run(250)
-        motord.run(250)
+        motore.run(180)
+        motord.run(180)
         while sensor_cor.color() != Color.BLACK:
             if verificarExisteBarreiraQ(sensor_cor):
                 motore.brake()

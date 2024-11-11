@@ -2,11 +2,12 @@
 from pybricks.hubs import EV3Brick
 from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor,
                                  InfraredSensor, UltrasonicSensor, GyroSensor)
-from pybricks.parameters import Port, Stop, Direction, Button, Color
+from pybricks.parameters import Port, Stop,Button, Direction, Button, Color
 from pybricks.tools import wait, StopWatch, DataLog
 from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import SoundFile, ImageFile
 from modules.andar import  frente, tras, direita, esquerda
+import random
 
 
 # This program requires LEGO EV3 MicroPython v2.0 or higher.
@@ -44,48 +45,38 @@ sensor_Cor = ColorSensor(Port.S2)
 
 #direita(motor_Esquerda, motor_Direita, gyro, posicao, sensor_Cor)
 
-frente(motor_Esquerda, motor_Direita, posicao, sensor_Cor)
-ev3.speaker.beep()
-wait(2000)
 
-frente(motor_Esquerda, motor_Direita, posicao, sensor_Cor)
-ev3.speaker.beep()
+while(1):
+    randomint = random.randint(1, 3)
+    if randomint == 1:
+        direita(motor_Esquerda, motor_Direita, gyro, posicao, sensor_Cor)
+    elif randomint == 2:
+        esquerda(motor_Esquerda, motor_Direita, gyro, posicao, sensor_Cor)
+    elif randomint == 3:
+        frente(motor_Esquerda, motor_Direita, posicao, sensor_Cor)
+    
+    wait(200)
+    ev3.speaker.beep()
 
-wait(2000)
+ 
+    while(1):
+        wait(200)
+        if sensor_Cor.color() == Color.GREEN:
+            ev3.speaker.beep()
+            break
+        pass
 
-direita(motor_Esquerda, motor_Direita, gyro, posicao, sensor_Cor)
-ev3.speaker.beep()
-wait(2000)
-
-esquerda(motor_Esquerda, motor_Direita, gyro, posicao, sensor_Cor)
-ev3.speaker.beep()
-wait(2000)
-
-frente(motor_Esquerda, motor_Direita, posicao, sensor_Cor)
-ev3.speaker.beep()
-wait(2000)
-
-frente(motor_Esquerda, motor_Direita, posicao, sensor_Cor)
-ev3.speaker.beep()
-wait(2000)
+        
 
 
 frente(motor_Esquerda, motor_Direita, posicao, sensor_Cor)
 ev3.speaker.beep()
 wait(2000)
 
-
 frente(motor_Esquerda, motor_Direita, posicao, sensor_Cor)
 ev3.speaker.beep()
-wait(2000)
 
-# esquerda(motor_Esquerda, motor_Direita, gyro, posicao, sensor_Cor)
-# ev3.speaker.beep()
-# wait(2000)
 
-# direita(motor_Esquerda, motor_Direita, gyro, posicao, sensor_Cor)
-# ev3.speaker.beep()
-# wait(2000)
 
 
 #beep
