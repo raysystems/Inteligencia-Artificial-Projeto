@@ -46,6 +46,7 @@ sensor_Cor = ColorSensor(Port.S2)
 #direita(motor_Esquerda, motor_Direita, gyro, posicao, sensor_Cor)
 
 
+
 while(1):
     randomint = random.randint(1, 3)
     if randomint == 1:
@@ -77,6 +78,25 @@ frente(motor_Esquerda, motor_Direita, posicao, sensor_Cor)
 ev3.speaker.beep()
 
 
+
+direita(motor_Esquerda, motor_Direita, gyro, posicao, sensor_Cor)
+ev3.speaker.beep()
+wait(2000)
+
+esquerda(motor_Esquerda, motor_Direita, gyro, posicao, sensor_Cor)
+ev3.speaker.beep()
+wait(2000)
+
+
+
+# esquerda(motor_Esquerda, motor_Direita, gyro, posicao, sensor_Cor)
+# ev3.speaker.beep()
+# wait(2000)
+
+# direita(motor_Esquerda, motor_Direita, gyro, posicao, sensor_Cor)
+# ev3.speaker.beep()
+# wait(2000)
+>>>>>>> 7d26c0e897fd19c859de72fc76548073317becca
 
 
 #beep
