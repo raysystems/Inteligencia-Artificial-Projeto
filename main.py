@@ -96,7 +96,6 @@ wait(2000)
 # direita(motor_Esquerda, motor_Direita, gyro, posicao, sensor_Cor)
 # ev3.speaker.beep()
 # wait(2000)
->>>>>>> 7d26c0e897fd19c859de72fc76548073317becca
 
 
 #beep
