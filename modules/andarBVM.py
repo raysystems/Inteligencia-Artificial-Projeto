@@ -1,6 +1,6 @@
 def menor_caminho(destino):
-    posicao = [6, 6]
-    x_inicial, y_inicial = posicao
+    posicaoBVM = [6, 6]
+    x_inicial, y_inicial = posicaoBVM
     x_destino, y_destino = destino
 
     # Movendo no eixo y primeiro
@@ -22,5 +22,5 @@ def menor_caminho(destino):
 
 
 # Exemplo de uso
-destino = [4, 3]
-print(menor_caminho(destino)) 
+#destino = [posicao[0], posicao[1]]
+#print(menor_caminho(destino)) 

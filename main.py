@@ -1,50 +1,43 @@
 #!/usr/bin/env pybricks-micropython
 from pybricks.hubs import EV3Brick
-from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor,
-                                 InfraredSensor, UltrasonicSensor, GyroSensor)
+from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor,InfraredSensor, UltrasonicSensor, GyroSensor)
 from pybricks.parameters import Port, Stop,Button, Direction, Button, Color
 from pybricks.tools import wait, StopWatch, DataLog
 from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import SoundFile, ImageFile
-from modules.andar import  frente, tras, direita, esquerda
+from modules.andar import  frente, direita, esquerda
 import random
 
+# Robô começa na posição [1,1]
+# BVM começa na posição [6,6]
 
-# This program requires LEGO EV3 MicroPython v2.0 or higher.
-# Click "Open user guide" on the EV3 extension tab for more information.
-# Robot começa no 1,1
 posicao = [1,1,1]
-# 0 - x
-# 1 - y
-#    
+# posicao[0] - x
+# posicao[1] - y
+# posicao[2] = 1 -> Norte
+# posicao[2] = 2 -> Este
+# posicao[2] = 3 -> Sul
+# posicao[2] = 4 -> Oeste
 
 
 # Create your objects here.
 ev3 = EV3Brick()
 
+
 #DEFINIÃO MOTOR
 
-
+sensor_Cor = ColorSensor(Port.S2)
 
 gyro = GyroSensor(Port.S4)
 
 gyro.reset_angle(0)
 
-motor_Direita = Motor(Port.A)
+motor_Direita = Motor(Port.D)
 
-motor_Esquerda = Motor(Port.D)
-
-sensor_Cor = ColorSensor(Port.S2)
+motor_Esquerda = Motor(Port.A)
 
 
-
-#direita(motor_Esquerda, motor_Direita, gyro)
-
-
-#frente(motor_Esquerda, motor_Direita)
-
-#direita(motor_Esquerda, motor_Direita, gyro, posicao, sensor_Cor)
-
+# Write your program here.
 
 
 while(1):
@@ -54,10 +47,8 @@ while(1):
     elif randomint == 2:
         esquerda(motor_Esquerda, motor_Direita, gyro, posicao, sensor_Cor)
     elif randomint == 3:
-        frente(motor_Esquerda, motor_Direita, posicao, sensor_Cor)
+        frente(motor_Esquerda, motor_Direita, gyro, posicao, sensor_Cor)
     
-    wait(200)
-    ev3.speaker.beep()
 
  
     while(1):
@@ -66,38 +57,5 @@ while(1):
             ev3.speaker.beep()
             break
         pass
-
-        
-
-
-frente(motor_Esquerda, motor_Direita, posicao, sensor_Cor)
-ev3.speaker.beep()
-wait(2000)
-
-frente(motor_Esquerda, motor_Direita, posicao, sensor_Cor)
-ev3.speaker.beep()
-
-
-
-direita(motor_Esquerda, motor_Direita, gyro, posicao, sensor_Cor)
-ev3.speaker.beep()
-wait(2000)
-
-esquerda(motor_Esquerda, motor_Direita, gyro, posicao, sensor_Cor)
-ev3.speaker.beep()
-wait(2000)
-
-
-
-# esquerda(motor_Esquerda, motor_Direita, gyro, posicao, sensor_Cor)
-# ev3.speaker.beep()
-# wait(2000)
-
-# direita(motor_Esquerda, motor_Direita, gyro, posicao, sensor_Cor)
-# ev3.speaker.beep()
-# wait(2000)
-
-
-#beep
 
 
