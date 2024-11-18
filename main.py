@@ -1,61 +1,86 @@
 #!/usr/bin/env pybricks-micropython
 from pybricks.hubs import EV3Brick
-from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor,InfraredSensor, UltrasonicSensor, GyroSensor)
+from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor,
+                                 InfraredSensor, UltrasonicSensor, GyroSensor)
 from pybricks.parameters import Port, Stop,Button, Direction, Button, Color
 from pybricks.tools import wait, StopWatch, DataLog
 from pybricks.robotics import DriveBase
+from pybricks.parameters import SoundFile
 from pybricks.media.ev3dev import SoundFile, ImageFile
-from modules.andar import  frente, direita, esquerda
+from modules.andar import  frente, tras, direita, esquerda
+from modules.andarBVM import menor_caminho, mover_para_manteiga
 import random
 
-# Robô começa na posição [1,1]
+
+# This program requires LEGO EV3 MicroPython v2.0 or higher.
+# Click "Open user guide" on the EV3 extension tab for more information.
+# Robot começa no 1,1
 posicao = [1,1,1]
-# posicao[0] - x
-# posicao[1] - y
-# posicao[2] = 1 -> Norte
-# posicao[2] = 2 -> Este
-# posicao[2] = 3 -> Sul
-# posicao[2] = 4 -> Oeste
-
-# BVM começa na posição [6,6]
-posicao_BVM = [6,6]
-
-# Manteiga começa numa posição [x,y]
-posicao_Manteiga = [3,3]
-
-# Torradeira começa numa posição [i,z]
-posicao_Torradeira = [5,2]
+posicaoBVM = [6,6]
+posicao_Manteiga = [3,1]
+# 0 - x
+# 1 - y
+#    
 
 
 # Create your objects here.
 ev3 = EV3Brick()
-
-
+ev3.speaker.set_volume(100)
 #DEFINIÃO MOTOR
 
-sensor_Cor = ColorSensor(Port.S2)
+
 
 gyro = GyroSensor(Port.S4)
 
 gyro.reset_angle(0)
 
-motor_Direita = Motor(Port.D)
+motor_Direita = Motor(Port.A)
 
-motor_Esquerda = Motor(Port.A)
+motor_Esquerda = Motor(Port.D)
+
+sensor_Cor = ColorSensor(Port.S2)
 
 
-# Write your program here.
+
+#direita(motor_Esquerda, motor_Direita, gyro)
+
+
+#frente(motor_Esquerda, motor_Direita)
+
+#direita(motor_Esquerda, motor_Direita, gyro, posicao, sensor_Cor)
+
 
 
 while(1):
+    turno = mover_para_manteiga(motor_Esquerda, motor_Direita, gyro, sensor_Cor, posicao, posicao_Manteiga, posicaoBVM)
+    if (turno == -1):
+        print("GAME OVER")
+        for i in range(20):
+            ev3.speaker.beep()
+            wait(50)
+       
+        break
+    if (turno == 1):
+        print("O HOMENZINHO CHEGOU NA MANTEIGA")
+        for i in range(5):
+            ev3.speaker.beep()
+            wait(1000)
+        break
+    '''
+    
+
     randomint = random.randint(1, 3)
     if randomint == 1:
         direita(motor_Esquerda, motor_Direita, gyro, posicao, sensor_Cor)
     elif randomint == 2:
         esquerda(motor_Esquerda, motor_Direita, gyro, posicao, sensor_Cor)
     elif randomint == 3:
-        frente(motor_Esquerda, motor_Direita, gyro, posicao, sensor_Cor)
-    
+        frente(motor_Esquerda, motor_Direita, posicao, sensor_Cor)
+      
+    wait(200)
+    ev3.speaker.beep()
+    print(posicao)
+    print("BVM")
 
  
     while(1):
@@ -64,5 +89,22 @@ while(1):
             ev3.speaker.beep()
             break
         pass
+    
+          '''
 
+
+
+
+
+
+# esquerda(motor_Esquerda, motor_Direita, gyro, posicao, sensor_Cor)
+# ev3.speaker.beep()
+# wait(2000)
+
+# direita(motor_Esquerda, motor_Direita, gyro, posicao, sensor_Cor)
+# ev3.speaker.beep()
+# wait(2000)
+
+
+#beep
 
