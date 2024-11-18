@@ -7,10 +7,7 @@ from modules.auxiliares import mover_para_manteiga
 from modules.andar import frente, direita, esquerda, virar_180
 
 # Robô começa na posição [1,1]
-# BVM começa na posição [6,6]
-
 posicao = [1,1,1]
-posicao_BVM = [6,6]
 # posicao[0] - x
 # posicao[1] - y
 # posicao[2] = 1 -> Norte
@@ -18,7 +15,14 @@ posicao_BVM = [6,6]
 # posicao[2] = 3 -> Sul
 # posicao[2] = 4 -> Oeste
 
-posicao_Manteiga = [2,5]
+# BVM começa na posição [6,6]
+posicao_BVM = [6,6]
+
+# Manteiga começa numa posição [x,y]
+posicao_Manteiga = [3,3]
+
+# Torradeira começa numa posição [i,z]
+posicao_Torradeira = [5,2]
 
 
 # Create your objects here.
