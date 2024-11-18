@@ -1,7 +1,7 @@
 from modules.andar import frente, direita, esquerda, virar_180
 from pybricks.tools import wait
 from pybricks.parameters import Color
-from modules.andar import barreira
+from modules.andar import estado_barreira
 
 
 def mover_para_manteiga(motore, motord, gyro, sensor_cor, posicao, posicao_Manteiga):
@@ -9,7 +9,7 @@ def mover_para_manteiga(motore, motord, gyro, sensor_cor, posicao, posicao_Mante
     y_destino = posicao_Manteiga[1]
 
     while posicao[0] != x_destino or posicao[1] != y_destino:
-        print(barreira)
+        print(estado_barreira)
         if posicao[1] < y_destino:
             if posicao[2] == 1:
 

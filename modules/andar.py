@@ -2,9 +2,11 @@ from pybricks.tools import wait
 from pybricks.parameters import Color 
 
 barreira = False
+estado_barreira = False
 
 def verificarBarreira(motore, motord, sensor_Cor):
     global barreira
+    global estado_barreira
     if (sensor_Cor.color() == Color.RED):
         motore.brake()
         motord.brake()
@@ -14,19 +16,21 @@ def verificarBarreira(motore, motord, sensor_Cor):
         motore.brake()
         motord.brake()
         # variavel para nao incrementar a posicao pois o robo nao andou devido a uma barreira
+        estado_barreira = True
         barreira = True
+    else:
+        estado_barreira = False
 
 
 # Função para verificar se ja andou uma casa apos encontrar a linha preta anda por um x tempo ate ficar dentro do quadrado
 def verificarPassagem(motore, motord, sensor_Cor, posicao, direcao):
     global barreira
     while sensor_Cor.color() != Color.BLACK:
-        if not(barreira):
-            motore.run(180)
-            motord.run(180)
-            verificarBarreira(motore, motord, sensor_Cor)
-        else:
-            break
+        
+        motore.run(180)
+        motord.run(180)
+        verificarBarreira(motore, motord, sensor_Cor)
+        
 
 
 def trocarOrientacao(direcao, posicao):
@@ -204,7 +208,7 @@ def frente(motore, motord, gyro, posicao, sensor_Cor):
             motore.brake()
             motord.brake()
             posicao[1] += 1
-            barreira = False
+        barreira = False
         gyro.reset_angle(0)
         print(posicao)
     elif posicao[2] == 2 and posicao[0] <= 5:
@@ -216,7 +220,7 @@ def frente(motore, motord, gyro, posicao, sensor_Cor):
             motore.brake()
             motord.brake()
             posicao[0] += 1
-            barreira = False
+        barreira = False
         gyro.reset_angle(0)
         print(posicao)
     elif posicao[2] == 3 and posicao[1] > 1:
@@ -228,7 +232,7 @@ def frente(motore, motord, gyro, posicao, sensor_Cor):
             motore.brake()
             motord.brake()
             posicao[1] -= 1
-            barreira = False
+        barreira = False
         gyro.reset_angle(0)
         print(posicao)
     elif posicao[2] == 4 and posicao[0] > 1:
@@ -240,7 +244,7 @@ def frente(motore, motord, gyro, posicao, sensor_Cor):
             motore.brake()
             motord.brake()
             posicao[0] -= 1
-            barreira = False
+        barreira = False
         gyro.reset_angle(0)
         print(posicao)
 
