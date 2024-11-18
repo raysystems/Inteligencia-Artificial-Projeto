@@ -13,10 +13,11 @@ def verificarBarreira(motore, motord, sensor_Cor):
         wait(1200)
         motore.brake()
         motord.brake()
+        # variavel para nao incrementar a posicao pois o robo nao andou devido a uma barreira
         barreira = True
 
 
-
+# Função para verificar se ja andou uma casa apos encontrar a linha preta anda por um x tempo ate ficar dentro do quadrado
 def verificarPassagem(motore, motord, sensor_Cor, posicao, direcao):
     global barreira
     while sensor_Cor.color() != Color.BLACK:
@@ -60,6 +61,7 @@ def direita(motore, motord, gyro, posicao, sensor_Cor):
             motord.brake()
             posicao[0] += 1
         barreira = False
+        
         gyro.reset_angle(0)
         print(posicao)
     elif posicao[2] == 2 and posicao[1] > 1:
@@ -202,7 +204,7 @@ def frente(motore, motord, gyro, posicao, sensor_Cor):
             motore.brake()
             motord.brake()
             posicao[1] += 1
-        barreira = False
+            barreira = False
         gyro.reset_angle(0)
         print(posicao)
     elif posicao[2] == 2 and posicao[0] <= 5:
@@ -214,7 +216,7 @@ def frente(motore, motord, gyro, posicao, sensor_Cor):
             motore.brake()
             motord.brake()
             posicao[0] += 1
-        barreira = False
+            barreira = False
         gyro.reset_angle(0)
         print(posicao)
     elif posicao[2] == 3 and posicao[1] > 1:
@@ -226,7 +228,7 @@ def frente(motore, motord, gyro, posicao, sensor_Cor):
             motore.brake()
             motord.brake()
             posicao[1] -= 1
-        barreira = False
+            barreira = False
         gyro.reset_angle(0)
         print(posicao)
     elif posicao[2] == 4 and posicao[0] > 1:
@@ -238,7 +240,7 @@ def frente(motore, motord, gyro, posicao, sensor_Cor):
             motore.brake()
             motord.brake()
             posicao[0] -= 1
-        barreira = False
+            barreira = False
         gyro.reset_angle(0)
         print(posicao)
 
