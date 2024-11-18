@@ -27,12 +27,12 @@ def menor_caminho(pos_bvm, posicao):
 
 
 
-def mover_para_manteiga(motore, motord, gyro, sensor_cor, posicao, posicao_Manteiga, pos_bvm, posicao_Torradeira):
+def mover_para_manteiga(motore, motord, gyro, sensor_cor, posicao, posicao_Manteiga, pos_bvm, posicao_Torradeira,ev3):
     x_destino = posicao_Manteiga[0]
     y_destino = posicao_Manteiga[1]
-    stunned = False
+    stunned = 0
     while posicao[0] != x_destino or posicao[1] != y_destino :
-        if not stunned:
+        if stunned != 1:
 
             if posicao[1] < y_destino:
                 if posicao[2] == 1:
@@ -74,9 +74,11 @@ def mover_para_manteiga(motore, motord, gyro, sensor_cor, posicao, posicao_Mante
                     direita(motore, motord, gyro, posicao, sensor_cor)
                 elif posicao[2] == 4:
                     frente(motore, motord, posicao, sensor_cor)
-            stunned = False
+        else:
+            ev3.speaker.beep()
+            wait(2000)
 
-
+        wait(2000)
         menor_caminho(pos_bvm, posicao)
         print("bvm ", pos_bvm)
         print("posicao ", posicao)
@@ -88,16 +90,31 @@ def mover_para_manteiga(motore, motord, gyro, sensor_cor, posicao, posicao_Mante
         if (posicao[0] == posicao_Manteiga[0] and posicao[1] == posicao_Manteiga[1]):
             print("O HOMENZINHO CHEGOU NA MANTEIGA")
             return 1
+        # se robot entrar na torradeira fica stunned
+        if (posicao[0] == posicao_Torradeira[0] and posicao[1] == posicao_Torradeira[1] and stunned == 0):
+            print("O HOMENZINHO CHEGOU NA TORRADEIRA")
+            stunned += 1
+            if (pos_bvm == posicao_Torradeira):
+                print("HOMEM TOSTA ESTAVA NA TORRADEIRA E BVM CHEGOU À TORRADEIRA")
+                return -1
+        elif (posicao[0] == posicao_Torradeira[0] and posicao[1] == posicao_Torradeira[1] and stunned == 1):
+            if (pos_bvm == posicao_Torradeira):
+                print("HOMEM TOSTA ESTAVA NA TORRADEIRA E BVM CHEGOU À TORRADEIRA")
+                return -1
+            stunned = 0
         # se o bolor chegar a tostadeira o jogo acaba
         if (pos_bvm[0] == posicao_Torradeira[0] and pos_bvm[1] == posicao_Torradeira[1]):
-            print("BVM CHEGOU NA TORRADEIRA")
+            print("BVM CHEGOU À TORRADEIRA")
             return 1
-        # se robot entrar na torradeira fica stunned
-        if (posicao[0] == posicao_Torradeira[0] and posicao[1] == posicao_Torradeira[1]):
-            print("O HOMENZINHO CHEGOU NA TORRADEIRA")
-            stunned = True
+        #se o bvm chegar ao robot
+        if (pos_bvm[0] == posicao[0] and pos_bvm[1] == posicao[1]):
+            print("BVM CHEGOU AO HOMENZINHO")
+            return -1
+        
         # Esperar atÃ© detectar a cor verde para continuar
         
         while sensor_cor.color() != Color.GREEN:
             wait(1)
+        wait(1000)
+        
         

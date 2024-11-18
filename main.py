@@ -17,12 +17,12 @@ import random
 # Robot começa no 1,1
 posicao = [1,1,1]
 posicaoBVM = [6,6]
-posicao_Manteiga = [3,1]
-posicao_Torradeira = [6,4]
+posicao_Manteiga = [3,3]
+posicao_Torradeira = [6,6]
 #gerar uma posicao aleatoria para que nao coincida nem com a manteiga nem o BVM nem com o homem tosta
 
-#while (posicao_Torradeira == posicao or posicao_Torradeira == posicaoBVM or posicao_Torradeira == posicao_Manteiga):
-#    posicao_Torradeira = [random.randint(1, 6), random.randint(1, 6)]  
+while (posicao_Torradeira == posicao or posicao_Torradeira == posicaoBVM or posicao_Torradeira == posicao_Manteiga):
+    posicao_Torradeira = [random.randint(1, 6), random.randint(1, 6)]  
 print("Posicao Torradeira: ", posicao_Torradeira)
 
 
@@ -60,7 +60,7 @@ sensor_Cor = ColorSensor(Port.S2)
 
 
 while(1):
-    turno = mover_para_manteiga(motor_Esquerda, motor_Direita, gyro, sensor_Cor, posicao, posicao_Manteiga, posicaoBVM,posicao_Torradeira)
+    turno = mover_para_manteiga(motor_Esquerda, motor_Direita, gyro, sensor_Cor, posicao, posicao_Manteiga, posicaoBVM,posicao_Torradeira,ev3)
     if (turno == -1):
         print("GAME OVER")
         for i in range(20):
