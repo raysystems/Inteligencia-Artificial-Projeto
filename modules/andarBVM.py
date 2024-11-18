@@ -1,4 +1,4 @@
-def menor_caminho(posicaoBVM, destino):
+def menor_caminho(destino):
     posicaoBVM = [6, 6]
     x_inicial, y_inicial = posicaoBVM
     x_destino, y_destino = destino

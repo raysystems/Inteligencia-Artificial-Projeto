@@ -1,10 +1,12 @@
 #!/usr/bin/env pybricks-micropython
 from pybricks.hubs import EV3Brick
-from pybricks.ev3devices import (Motor, ColorSensor, GyroSensor)
-from pybricks.parameters import Port
-from pybricks.tools import wait
-from modules.auxiliares import mover_para_manteiga
-from modules.andar import frente, direita, esquerda, virar_180
+from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor,InfraredSensor, UltrasonicSensor, GyroSensor)
+from pybricks.parameters import Port, Stop,Button, Direction, Button, Color
+from pybricks.tools import wait, StopWatch, DataLog
+from pybricks.robotics import DriveBase
+from pybricks.media.ev3dev import SoundFile, ImageFile
+from modules.andar import  frente, direita, esquerda
+import random
 
 # Robô começa na posição [1,1]
 posicao = [1,1,1]
@@ -46,31 +48,21 @@ motor_Esquerda = Motor(Port.A)
 
 
 while(1):
-    '''randomint = random.randint(1, 3)
+    randomint = random.randint(1, 3)
     if randomint == 1:
         direita(motor_Esquerda, motor_Direita, gyro, posicao, sensor_Cor)
     elif randomint == 2:
         esquerda(motor_Esquerda, motor_Direita, gyro, posicao, sensor_Cor)
     elif randomint == 3:
-        frente(motor_Esquerda, motor_Direita, gyro, posicao, sensor_Cor)'''
+        frente(motor_Esquerda, motor_Direita, gyro, posicao, sensor_Cor)
     
-    mover_para_manteiga(motor_Esquerda, motor_Direita, gyro, sensor_Cor, posicao, posicao_Manteiga)
 
-
-    '''while(1):
+ 
+    while(1):
         wait(200)
         if sensor_Cor.color() == Color.GREEN:
             ev3.speaker.beep()
             break
-        pass'''
-    
-
-    '''rgb = sensor_Cor.rgb()
-    color = sensor_Cor.color()
-    ambient = sensor_Cor.ambient()
-    reflection = sensor_Cor.reflection()
-    # Print the measurements.
-    print(rgb, color)'''
+        pass
 
 
-    
