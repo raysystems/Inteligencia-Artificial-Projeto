@@ -1,5 +1,8 @@
 from pybricks.tools import wait 
 from pybricks.parameters import Color 
+from pybricks.hubs import EV3Brick
+
+beep = EV3Brick()
 
 barreira = False
 estado_barreira = False
@@ -68,6 +71,7 @@ def direita(motore, motord, gyro, posicao, sensor_Cor):
         
         gyro.reset_angle(0)
         print(posicao)
+        beep.speaker.beep()
     elif posicao[2] == 2 and posicao[1] > 1:
         while int(gyro.angle()) < 90:
             motore.run(150)
@@ -86,6 +90,7 @@ def direita(motore, motord, gyro, posicao, sensor_Cor):
         barreira = False
         gyro.reset_angle(0)
         print(posicao)
+        beep.speaker.beep()
     elif posicao[2] == 3 and posicao[0] > 1:
         while int(gyro.angle()) < 90:
             motore.run(150)
@@ -104,6 +109,7 @@ def direita(motore, motord, gyro, posicao, sensor_Cor):
         barreira = False
         gyro.reset_angle(0)
         print(posicao)
+        beep.speaker.beep()
     elif posicao[2] == 4 and posicao[1] <= 5:
         while int(gyro.angle()) < 90:
             motore.run(150)
@@ -122,6 +128,7 @@ def direita(motore, motord, gyro, posicao, sensor_Cor):
         barreira = False
         gyro.reset_angle(0)
         print(posicao)
+        beep.speaker.beep()
 def esquerda(motore, motord, gyro, posicao, sensor_Cor):
     global barreira
     if posicao[2] == 1 and posicao[0] > 1:
@@ -142,6 +149,7 @@ def esquerda(motore, motord, gyro, posicao, sensor_Cor):
         barreira = False
         gyro.reset_angle(0)
         print(posicao)
+        beep.speaker.beep()
     elif posicao[2] == 2 and posicao[1] <= 5:
         while int(gyro.angle()) > -90:
             motore.run(-150)
@@ -160,6 +168,7 @@ def esquerda(motore, motord, gyro, posicao, sensor_Cor):
         barreira = False
         gyro.reset_angle(0)
         print(posicao)
+        beep.speaker.beep()
     elif posicao[2] == 3 and posicao[0] <= 5:
         while int(gyro.angle()) > -90:
             motore.run(-150)
@@ -178,6 +187,7 @@ def esquerda(motore, motord, gyro, posicao, sensor_Cor):
         barreira = False
         gyro.reset_angle(0)
         print(posicao)
+        beep.speaker.beep()
     elif posicao[2] == 4 and posicao[1] > 1:
         while int(gyro.angle()) > -90:
             motore.run(-150)
@@ -196,6 +206,7 @@ def esquerda(motore, motord, gyro, posicao, sensor_Cor):
         barreira = False
         gyro.reset_angle(0)
         print(posicao)
+        beep.speaker.beep()
 
 def frente(motore, motord, gyro, posicao, sensor_Cor):
     global barreira
@@ -211,6 +222,7 @@ def frente(motore, motord, gyro, posicao, sensor_Cor):
         barreira = False
         gyro.reset_angle(0)
         print(posicao)
+        beep.speaker.beep()
     elif posicao[2] == 2 and posicao[0] <= 5:
         motore.run(180)
         motord.run(180)
@@ -223,6 +235,7 @@ def frente(motore, motord, gyro, posicao, sensor_Cor):
         barreira = False
         gyro.reset_angle(0)
         print(posicao)
+        beep.speaker.beep()
     elif posicao[2] == 3 and posicao[1] > 1:
         motore.run(180)
         motord.run(180)
@@ -235,6 +248,7 @@ def frente(motore, motord, gyro, posicao, sensor_Cor):
         barreira = False
         gyro.reset_angle(0)
         print(posicao)
+        beep.speaker.beep()
     elif posicao[2] == 4 and posicao[0] > 1:
         motore.run(180)
         motord.run(180)
@@ -247,6 +261,7 @@ def frente(motore, motord, gyro, posicao, sensor_Cor):
         barreira = False
         gyro.reset_angle(0)
         print(posicao)
+        beep.speaker.beep()
 
 
 def virar_180(motore, motord, gyro, posicao):
