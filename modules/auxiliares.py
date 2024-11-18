@@ -1,14 +1,18 @@
 from modules.andar import frente, direita, esquerda, virar_180
 from pybricks.tools import wait
 from pybricks.parameters import Color
+from modules.andar import barreira
+
 
 def mover_para_manteiga(motore, motord, gyro, sensor_cor, posicao, posicao_Manteiga):
     x_destino = posicao_Manteiga[0]
     y_destino = posicao_Manteiga[1]
 
     while posicao[0] != x_destino or posicao[1] != y_destino:
+        print(barreira)
         if posicao[1] < y_destino:
             if posicao[2] == 1:
+
                 frente(motore, motord, gyro, posicao, sensor_cor)
             elif posicao[2] == 2:
                 esquerda(motore, motord, gyro, posicao, sensor_cor)
@@ -70,6 +74,6 @@ def fugir_do_BVM(motore, motord, gyro, sensor_cor, posicao, posicao_BVM):
             while posicao[2] != 4:
                 direita(motore, motord, gyro, posicao, sensor_cor)
             frente(motore, motord, gyro, posicao, sensor_cor)
-
+#distancia entre o homem tosta e o bolor
 def calcular_distancia(posicao1, posicao2):
     return abs(posicao1[0] - posicao2[0]) + abs(posicao1[1] - posicao2[1])
