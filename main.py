@@ -18,6 +18,14 @@ import random
 posicao = [1,1,1]
 posicaoBVM = [6,6]
 posicao_Manteiga = [3,1]
+posicao_Torradeira = [6,4]
+#gerar uma posicao aleatoria para que nao coincida nem com a manteiga nem o BVM nem com o homem tosta
+
+#while (posicao_Torradeira == posicao or posicao_Torradeira == posicaoBVM or posicao_Torradeira == posicao_Manteiga):
+#    posicao_Torradeira = [random.randint(1, 6), random.randint(1, 6)]  
+print("Posicao Torradeira: ", posicao_Torradeira)
+
+
 # 0 - x
 # 1 - y
 #    
@@ -52,7 +60,7 @@ sensor_Cor = ColorSensor(Port.S2)
 
 
 while(1):
-    turno = mover_para_manteiga(motor_Esquerda, motor_Direita, gyro, sensor_Cor, posicao, posicao_Manteiga, posicaoBVM)
+    turno = mover_para_manteiga(motor_Esquerda, motor_Direita, gyro, sensor_Cor, posicao, posicao_Manteiga, posicaoBVM,posicao_Torradeira)
     if (turno == -1):
         print("GAME OVER")
         for i in range(20):
@@ -61,7 +69,6 @@ while(1):
        
         break
     if (turno == 1):
-        print("O HOMENZINHO CHEGOU NA MANTEIGA")
         for i in range(5):
             ev3.speaker.beep()
             wait(1000)

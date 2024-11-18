@@ -27,62 +27,77 @@ def menor_caminho(pos_bvm, posicao):
 
 
 
-def mover_para_manteiga(motore, motord, gyro, sensor_cor, posicao, posicao_Manteiga, pos_bvm):
+def mover_para_manteiga(motore, motord, gyro, sensor_cor, posicao, posicao_Manteiga, pos_bvm, posicao_Torradeira):
     x_destino = posicao_Manteiga[0]
     y_destino = posicao_Manteiga[1]
+    stunned = False
+    while posicao[0] != x_destino or posicao[1] != y_destino :
+        if not stunned:
 
-    while posicao[0] != x_destino or posicao[1] != y_destino:
-        if posicao[1] < y_destino:
-            if posicao[2] == 1:
-                frente(motore, motord, posicao, sensor_cor)
-            elif posicao[2] == 2:
-                esquerda(motore, motord, gyro, posicao, sensor_cor)
-            elif posicao[2] == 3:
-                virar_180(motore, motord, gyro, posicao)
-                frente(motore, motord, posicao, sensor_cor)
-            elif posicao[2] == 4:
-                direita(motore, motord, gyro, posicao, sensor_cor)
-        elif posicao[1] > y_destino:
-            if posicao[2] == 1:
-                virar_180(motore, motord, gyro, posicao)
-                frente(motore, motord, posicao, sensor_cor)
-            elif posicao[2] == 2:
-                direita(motore, motord, gyro, posicao, sensor_cor)
-            elif posicao[2] == 3:
-                frente(motore, motord, posicao, sensor_cor)
-            elif posicao[2] == 4:
-                esquerda(motore, motord, gyro, posicao, sensor_cor)
-        elif posicao[0] < x_destino:
-            if posicao[2] == 1:
-                direita(motore, motord, gyro, posicao, sensor_cor)
-            elif posicao[2] == 2:
-                frente(motore, motord, posicao, sensor_cor)
-            elif posicao[2] == 3:
-                esquerda(motore, motord, gyro, posicao, sensor_cor)
-            elif posicao[2] == 4:
-                virar_180(motore, motord, gyro, posicao)
-                frente(motore, motord, posicao, sensor_cor)
-        elif posicao[0] > x_destino:
-            if posicao[2] == 1:
-                esquerda(motore, motord, gyro, posicao, sensor_cor)
-            elif posicao[2] == 2:
-                virar_180(motore, motord, gyro, posicao)
-                frente(motore, motord, posicao, sensor_cor)
-            elif posicao[2] == 3:
-                direita(motore, motord, gyro, posicao, sensor_cor)
-            elif posicao[2] == 4:
-                frente(motore, motord, posicao, sensor_cor)
+            if posicao[1] < y_destino:
+                if posicao[2] == 1:
+                    frente(motore, motord, posicao, sensor_cor)
+                elif posicao[2] == 2:
+                    esquerda(motore, motord, gyro, posicao, sensor_cor)
+                elif posicao[2] == 3:
+                    virar_180(motore, motord, gyro, posicao)
+                    frente(motore, motord, posicao, sensor_cor)
+                elif posicao[2] == 4:
+                    direita(motore, motord, gyro, posicao, sensor_cor)
+            elif posicao[1] > y_destino:
+                if posicao[2] == 1:
+                    virar_180(motore, motord, gyro, posicao)
+                    frente(motore, motord, posicao, sensor_cor)
+                elif posicao[2] == 2:
+                    direita(motore, motord, gyro, posicao, sensor_cor)
+                elif posicao[2] == 3:
+                    frente(motore, motord, posicao, sensor_cor)
+                elif posicao[2] == 4:
+                    esquerda(motore, motord, gyro, posicao, sensor_cor)
+            elif posicao[0] < x_destino:
+                if posicao[2] == 1:
+                    direita(motore, motord, gyro, posicao, sensor_cor)
+                elif posicao[2] == 2:
+                    frente(motore, motord, posicao, sensor_cor)
+                elif posicao[2] == 3:
+                    esquerda(motore, motord, gyro, posicao, sensor_cor)
+                elif posicao[2] == 4:
+                    virar_180(motore, motord, gyro, posicao)
+                    frente(motore, motord, posicao, sensor_cor)
+            elif posicao[0] > x_destino:
+                if posicao[2] == 1:
+                    esquerda(motore, motord, gyro, posicao, sensor_cor)
+                elif posicao[2] == 2:
+                    virar_180(motore, motord, gyro, posicao)
+                    frente(motore, motord, posicao, sensor_cor)
+                elif posicao[2] == 3:
+                    direita(motore, motord, gyro, posicao, sensor_cor)
+                elif posicao[2] == 4:
+                    frente(motore, motord, posicao, sensor_cor)
+            stunned = False
+
 
         menor_caminho(pos_bvm, posicao)
         print("bvm ", pos_bvm)
         print("posicao ", posicao)
         # Se BVM chegar até à manteiga o robot perde
         if (pos_bvm[0] == posicao_Manteiga[0] and pos_bvm[1] == posicao_Manteiga[1]):
+            print("BVM CHEGOU NA MANTEIGA")
             return -1
         # Se o robot chegar à posição da manteiga o jogo acaba e o homem tosta ganha
         if (posicao[0] == posicao_Manteiga[0] and posicao[1] == posicao_Manteiga[1]):
+            print("O HOMENZINHO CHEGOU NA MANTEIGA")
             return 1
+        # se o bolor chegar a tostadeira o jogo acaba
+        if (pos_bvm[0] == posicao_Torradeira[0] and pos_bvm[1] == posicao_Torradeira[1]):
+            print("BVM CHEGOU NA TORRADEIRA")
+            return 1
+        # se robot entrar na torradeira fica stunned
+        if (posicao[0] == posicao_Torradeira[0] and posicao[1] == posicao_Torradeira[1]):
+            print("O HOMENZINHO CHEGOU NA TORRADEIRA")
+            stunned = True
         # Esperar atÃ© detectar a cor verde para continuar
+        
         while sensor_cor.color() != Color.GREEN:
             wait(1)
         
