@@ -8,19 +8,21 @@ from pybricks.robotics import DriveBase
 from pybricks.parameters import SoundFile
 from pybricks.media.ev3dev import SoundFile, ImageFile
 from modules.andar import  frente, tras, direita, esquerda
-from modules.andarBVM import menor_caminho, mover_para_manteiga
+from modules.andarBVM import menor_caminho, mover_para_manteiga, waitforinput, dist_to_square, calc_psols, calc_new_sols
 import random
 
 
 # This program requires LEGO EV3 MicroPython v2.0 or higher.
 # Click "Open user guide" on the EV3 extension tab for more information.
+
 # Robot começa no 1,1
 posicao = [1,1,1]
 posicaoBVM = [6,6]
-posicao_Manteiga = [3,3]
 posicao_Torradeira = [6,6]
-#gerar uma posicao aleatoria para que nao coincida nem com a manteiga nem o BVM nem com o homem tosta
+init_dist = 0 #a ser incrementado segundo input
+psols = [] #soluções possíveis/quadrados a uma distância igual à dada
 
+#gerar uma posicao aleatoria para que nao coincida nem com a manteiga nem o BVM nem com o homem tosta
 while (posicao_Torradeira == posicao or posicao_Torradeira == posicaoBVM or posicao_Torradeira == posicao_Manteiga):
     posicao_Torradeira = [random.randint(1, 6), random.randint(1, 6)]  
 print("Posicao Torradeira: ", posicao_Torradeira)
@@ -57,10 +59,14 @@ sensor_Cor = ColorSensor(Port.S2)
 
 #direita(motor_Esquerda, motor_Direita, gyro, posicao, sensor_Cor)
 
+init_dist = waitforinput(ev3, sensor_Cor)
 
+psols = calc_psols(posicao, init_dist)
+
+posicao_Manteiga = psols[0]
 
 while(1):
-    turno = mover_para_manteiga(motor_Esquerda, motor_Direita, gyro, sensor_Cor, posicao, posicao_Manteiga, posicaoBVM,posicao_Torradeira,ev3)
+    turno = mover_para_manteiga(motor_Esquerda, motor_Direita, gyro, sensor_Cor, posicao, posicao_Manteiga, posicaoBVM,posicao_Torradeira,ev3, init_dist, psols)
     if (turno == -1):
         print("GAME OVER")
         for i in range(20):
