@@ -25,13 +25,81 @@ def menor_caminho(pos_bvm, posicao):
     pos_bvm[0] = x_inicial
     pos_bvm[1] = y_inicial
 
+def waitforinput(ev3,sensor_cor):
+
+    #distância para cada cor
+    d4 = Color.BROWN
+    d3 = Color.BLUE
+    d2 = Color.RED
+    d1 = Color.YELLOW
+    md2 = Color.BLACK #para decrementar em caso de bug, sem ter que reiniciar o programa
+    total_dist = 0
+
+    while sensor_cor.color() != Color.GREEN:
+        match sensor_cor.color(): #python >= 3.10
+            case d4:
+                total_dist += 4
+                ev3.speaker.beep()
+                print(total_dist)
+                wait(1000)
+            case d3:
+                total_dist += 3
+                ev3.speaker.beep()
+                print(total_dist)
+                wait(1000)
+            case d2:
+                total_dist += 2
+                ev3.speaker.beep()
+                print(total_dist)
+                wait(1000)
+            case d1:
+                total_dist += 1
+                ev3.speaker.beep()
+                print(total_dist)
+                wait(1000)
+            case md2:
+                total_dist -= 2
+                ev3.speaker.beep()
+                print(total_dist)
+                wait(1000)
+            case default:
+                wait(100)
+    wait(1000)
+    return total_dist
+
+def dist_to_square(posicao, square): #devolve dist do robô até o quadrado passado como arg
+    return abs(posicao[0]-square[0])+abs(posicao[1]-square[1])
+
+def calc_psols(posicao, dist): #devolve as soluções possíveis iniciais
+    psols = []
+    for y in range(6):
+        for x in range(6):
+            if dist_to_square(posicao,[x+1,y+1]) == dist:
+                psols.append([x+1,y+1])
+    return psols
+
+#devolve as novas sols dependendo se ficou mais perto/longe
+def calc_new_sols(previous_pos, current_pos, previous_dist, current_dist, current_sols):
+    if previous_dist > current_dist: #está mais perto
+        for sol in current_sols: #remove os que ficaram mais longe
+            if dist_to_square(current_pos, sol) > dist_to_square(previous_pos,sol):
+                current_sols.remove(sol)
+    else: #está mais longe
+        for sol in current_sols: #remove os que ficaram mais perto
+            if dist_to_square(current_pos, sol) < dist_to_square(previous_pos,sol):
+                current_sols.remove(sol)
+    return current_sols
 
 
-def mover_para_manteiga(motore, motord, gyro, sensor_cor, posicao, posicao_Manteiga, pos_bvm, posicao_Torradeira,ev3):
+
+def mover_para_manteiga(motore, motord, gyro, sensor_cor, posicao, posicao_Manteiga, pos_bvm, posicao_Torradeira,ev3, init_dist, psols):
     x_destino = posicao_Manteiga[0]
     y_destino = posicao_Manteiga[1]
     stunned = 0
+    pos_queue = [posicao] #queue para a posição atual e anterior do robô
+    dist_queue = [init_dist]
     while posicao[0] != x_destino or posicao[1] != y_destino :
+        new_dist = 0
         if stunned != 1:
 
             if posicao[1] < y_destino:
@@ -112,9 +180,23 @@ def mover_para_manteiga(motore, motord, gyro, sensor_cor, posicao, posicao_Mante
             return -1
         
         # Esperar atÃ© detectar a cor verde para continuar
+        new_dist = waitforinput(ev3, sensor_cor)
+
+        #mantém as 2 distâncias e posições mais recentes em queues
+        dist_queue.append(new_dist)
+        if len(dist_queue) > 2:
+            dist_queue.pop(0)
+        pos_queue.append(posicao)
+        if len(pos_queue) > 2:
+            pos_queue.pop(0)
+
+        #atualiza as soluções possíveis
+        psols = calc_new_sols(pos_queue[0],pos_queue[1],dist_queue[0],dist_queue[1],psols)
         
-        while sensor_cor.color() != Color.GREEN:
-            wait(1)
-        wait(1000)
+        x_destino = psols[0][0]
+        y_destino = psols[0][1]
+
+        #!importante, falta dar fix na condição de detetar se o homem chegou à manteiga, o bvm chegou à manteiga, e o q está hardcoded da fase anterior
+        
         
         
