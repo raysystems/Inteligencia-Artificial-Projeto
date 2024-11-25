@@ -74,8 +74,8 @@ def calc_psols(posicao, dist): #devolve as soluções possíveis iniciais
     psols = []
     for y in range(6):
         for x in range(6):
-            if dist_to_square(posicao,[x,y]) == dist:
-                psols.append([x,y])
+            if dist_to_square(posicao,[x+1,y+1]) == dist:
+                psols.append([x+1,y+1])
     return psols
 
 #devolve as novas sols dependendo se ficou mais perto/longe
