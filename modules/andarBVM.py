@@ -149,7 +149,6 @@ def mover_para_manteiga(caminho_ideal, motore, motord, gyro, sensor_cor, posicao
         if stunned != 1:
             # criar funcao ir para coords. x_destino, y_destino
             irparaCoords(x_destino,y_destino, posicao, motore, motord, gyro, sensor_cor)
-
         else:
             ev3.speaker.beep()
             wait(2000)
@@ -273,6 +272,7 @@ def mover_para_manteiga(caminho_ideal, motore, motord, gyro, sensor_cor, posicao
             print("Barreiras ", barreiras)
             #agora sim vamos recalcula a rota
             caminho_ideal = calcular_rota([posicao[0], posicao[1]], [x_destino, y_destino], barreiras)
+            caminho_ideal.pop(0)
             print("Dado que encontrei uma Barreira Tem se um novo caminho - ", caminho_ideal)
         else:
             #o destino pode ter mudado portanto vamos recalcular a rota
