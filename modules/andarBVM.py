@@ -143,6 +143,8 @@ def remove_solucoes_nao_otimas(posicao, new_dist, distancia_antiga, sols):
 def mover_para_manteiga(caminho_ideal, motore, motord, gyro, sensor_cor, posicao, posicao_Manteiga, pos_bvm, posicao_Torradeira,ev3, init_dist, psols, distancia_antiga, barreiras):
     x_destino = posicao_Manteiga[0]
     y_destino = posicao_Manteiga[1]
+    copia_x_destino = x_destino
+    copia_y_destino = y_destino
     stunned = 0
     new_dist = init_dist
     while (1):
@@ -214,6 +216,8 @@ def mover_para_manteiga(caminho_ideal, motore, motord, gyro, sensor_cor, posicao
             
             x_destino = psols[0][0]
             y_destino = psols[0][1]
+
+        
         
         #agora que estao recalculadas as solucoes possiveis, calcular a nova rota
         # se foi encontrada uma barreira temos que recalcular a rota
@@ -273,13 +277,28 @@ def mover_para_manteiga(caminho_ideal, motore, motord, gyro, sensor_cor, posicao
             #agora sim vamos recalcula a rota
             caminho_ideal = calcular_rota([posicao[0], posicao[1]], [x_destino, y_destino], barreiras)
             caminho_ideal.pop(0)
+            x_destino = caminho_ideal[0][0]
+            y_destino = caminho_ideal[0][1]
+            copia_x_destino = x_destino
+            copia_y_destino = y_destino
             print("Dado que encontrei uma Barreira Tem se um novo caminho - ", caminho_ideal)
         else:
             #o destino pode ter mudado portanto vamos recalcular a rota
-            caminho_ideal = calcular_rota([posicao[0], posicao[1]], [x_destino, y_destino], barreiras)
-            caminho_ideal.pop(0) #remover a posicao atual do robot
-            x_destino = caminho_ideal[0][0]
-            y_destino = caminho_ideal[0][1]
+            #se o destino mudar recalculo a rota caso contrario pop
+            if (copia_x_destino != x_destino or copia_y_destino != y_destino): 
+                caminho_ideal = calcular_rota([posicao[0], posicao[1]], [x_destino, y_destino], barreiras)
+                caminho_ideal.pop(0) #remover a posicao atual do robot
+                x_destino = caminho_ideal[0][0]
+                y_destino = caminho_ideal[0][1]
+                copia_x_destino = x_destino
+                copia_y_destino = y_destino
+            else:
+                caminho_ideal.pop(0)
+                x_destino = caminho_ideal[0][0]
+                y_destino = caminho_ideal[0][1]
+                copia_x_destino = x_destino
+                copia_y_destino = y_destino
+
 
 
             
