@@ -1,4 +1,5 @@
 from modules.andar import frente, esquerda, direita, virar_180
+from modules.googlemaps import calcular_rota
 from pybricks.parameters import Color
 from pybricks.tools import wait
 def menor_caminho(pos_bvm, posicao):
@@ -24,6 +25,56 @@ def menor_caminho(pos_bvm, posicao):
 
     pos_bvm[0] = x_inicial
     pos_bvm[1] = y_inicial
+
+
+def irparaCoords(x_destino,y_destino, posicao, motore, motord, gyro, sensor_cor):
+    #primeiro ver a orientacao do robot
+    #caso norte
+    if posicao[2] == 1:
+        if posicao[0] > x_destino:
+            esquerda(motore, motord, gyro, sensor_cor)
+        elif posicao[0] < x_destino:
+            direita(motore, motord, gyro, sensor_cor)
+        elif posicao[1] > y_destino:
+            virar_180(motore, motord, gyro, sensor_cor)
+            frente(motore, motord)
+        elif posicao[1] < y_destino:
+            frente(motore, motord)
+    #caso sul
+    elif posicao[2] == 3:
+        if posicao[0] > x_destino:
+            direita(motore, motord, gyro, sensor_cor)
+        elif posicao[0] < x_destino:
+            esquerda(motore, motord, gyro, sensor_cor)
+        elif posicao[1] > y_destino:
+            frente(motore, motord)
+        elif posicao[1] < y_destino:
+            virar_180(motore, motord, gyro, sensor_cor)
+            frente(motore, motord)
+    #caso este
+    elif posicao[2] == 2:
+        if posicao[0] > x_destino:
+            virar_180(motore, motord, gyro, sensor_cor)
+            frente(motore, motord)
+        elif posicao[0] < x_destino:
+            frente(motore, motord)
+        elif posicao[1] > y_destino:
+            esquerda(motore, motord, gyro, sensor_cor)
+        elif posicao[1] < y_destino:
+            direita(motore, motord, gyro, sensor_cor)
+    #caso oeste
+    elif posicao[2] == 4:
+        if posicao[0] > x_destino:
+            frente(motore, motord)
+        elif posicao[0] < x_destino:
+            virar_180(motore, motord, gyro, sensor_cor)
+            frente(motore, motord)
+        elif posicao[1] > y_destino:
+            direita(motore, motord, gyro, sensor_cor)
+        elif posicao[1] < y_destino:
+            esquerda(motore, motord, gyro, sensor_cor)
+    
+
 
 def waitforinput(ev3,sensor_cor):
 
@@ -89,55 +140,16 @@ def remove_solucoes_nao_otimas(posicao, new_dist, distancia_antiga, sols):
 
 
 
-def mover_para_manteiga(motore, motord, gyro, sensor_cor, posicao, posicao_Manteiga, pos_bvm, posicao_Torradeira,ev3, init_dist, psols, distancia_antiga):
+def mover_para_manteiga(caminho_ideal, motore, motord, gyro, sensor_cor, posicao, posicao_Manteiga, pos_bvm, posicao_Torradeira,ev3, init_dist, psols, distancia_antiga, barreiras):
     x_destino = posicao_Manteiga[0]
     y_destino = posicao_Manteiga[1]
     stunned = 0
     new_dist = init_dist
     while (1):
         if stunned != 1:
-            print("Estou indo para x ", x_destino, " e y ", y_destino)
-            if posicao[1] < y_destino:
-                if posicao[2] == 1:
-                    frente(motore, motord, posicao, sensor_cor)
-                elif posicao[2] == 2:
-                    esquerda(motore, motord, gyro, posicao, sensor_cor)
-                elif posicao[2] == 3:
-                    virar_180(motore, motord, gyro, posicao)
-                    frente(motore, motord, posicao, sensor_cor)
-                elif posicao[2] == 4:
-                    direita(motore, motord, gyro, posicao, sensor_cor)
-            elif posicao[1] > y_destino:
-                if posicao[2] == 1:
-                    virar_180(motore, motord, gyro, posicao)
-                   
-                    frente(motore, motord, posicao, sensor_cor)
-                elif posicao[2] == 2:
-                    direita(motore, motord, gyro, posicao, sensor_cor)
-                elif posicao[2] == 3:
-                    frente(motore, motord, posicao, sensor_cor)
-                elif posicao[2] == 4:
-                    esquerda(motore, motord, gyro, posicao, sensor_cor)
-            elif posicao[0] < x_destino:
-                if posicao[2] == 1:
-                    direita(motore, motord, gyro, posicao, sensor_cor)
-                elif posicao[2] == 2:
-                    frente(motore, motord, posicao, sensor_cor)
-                elif posicao[2] == 3:
-                    esquerda(motore, motord, gyro, posicao, sensor_cor)
-                elif posicao[2] == 4:
-                    virar_180(motore, motord, gyro, posicao)
-                    frente(motore, motord, posicao, sensor_cor)
-            elif posicao[0] > x_destino:
-                if posicao[2] == 1:
-                    esquerda(motore, motord, gyro, posicao, sensor_cor)
-                elif posicao[2] == 2:
-                    virar_180(motore, motord, gyro, posicao)
-                    frente(motore, motord, posicao, sensor_cor)
-                elif posicao[2] == 3:
-                    direita(motore, motord, gyro, posicao, sensor_cor)
-                elif posicao[2] == 4:
-                    frente(motore, motord, posicao, sensor_cor)
+            # criar funcao ir para coords. x_destino, y_destino
+            irparaCoords(x_destino,y_destino, posicao, motore, motord, gyro, sensor_cor)
+
         else:
             ev3.speaker.beep()
             wait(2000)
@@ -181,10 +193,10 @@ def mover_para_manteiga(motore, motord, gyro, sensor_cor, posicao, posicao_Mante
 
         if (distancia_antiga > new_dist):
             distancia_antiga = new_dist
-            print("Distancia antiga ", distancia_antiga)
+            #print("Distancia antiga ", distancia_antiga)
 
 
-        #atualiza as soluções possíveis
+    
         
 
         new_dist = waitforinput(ev3, sensor_cor)
@@ -193,10 +205,6 @@ def mover_para_manteiga(motore, motord, gyro, sensor_cor, posicao, posicao_Mante
 
         newpsols = remove_solucoes_nao_otimas(posicao,new_dist,distancia_antiga,psols)
         psols = newpsols
-        if(posicao[3] == 1 and len(psols) > 1):
-            #inverte o array psols
-            psols = psols[::-1]
-            posicao[3] = 0
 
         if len(psols) == 1:
             print("Posição final Manteiga: ", psols[0])
@@ -207,18 +215,73 @@ def mover_para_manteiga(motore, motord, gyro, sensor_cor, posicao, posicao_Mante
             
             x_destino = psols[0][0]
             y_destino = psols[0][1]
-        #else:
-        #    posicao[3] = 0
-        #    newpsols = remove_solucoes_nao_otimas(posicao,new_dist,distancia_antiga,psols)
-        #    psols = newpsols
-        #    if len(psols) == 1:
-        #        print("Posição final Manteiga: ", psols[0])
-        #    else: 
-        #        print("Psols ", psols)
-        #    x_destino = psols[-1][0]
-        #    y_destino = psols[-1][1]
+        
+        #agora que estao recalculadas as solucoes possiveis, calcular a nova rota
+        # se foi encontrada uma barreira temos que recalcular a rota
+        if (posicao[3] == 1):
+            # a barreira foi encontrada e temos que adiconar a barreira à lista de barreiras
+            # para isso e necessario ter em consideracao a posicao do robot e que ele ia
+            # para a posicao da barreira
+            
+            posicao[3] = 0
+            # temos que ver com base no destino e orientacao do robot qual seria a nova coordenada
+            # para onde ele ia
+            copia_posicao = [posicao[0], posicao[1]]
+            if posicao[2] == 1:
+                #se estava para norte temos que analisar a sua posicao atual face ao destino
+                if posicao[0] > x_destino:
+                    copia_posicao[0] += 1
+                elif posicao[0] < x_destino:
+                    copia_posicao[0] -= 1
+                elif posicao[1] > y_destino:
+                    copia_posicao[1] += 1
+                elif posicao[1] < y_destino:
+                    copia_posicao[1] -= 1
+            elif posicao[2] == 2:
+                #se estava para este temos que analisar a sua posicao atual face ao destino
+                if posicao[0] > x_destino:
+                    copia_posicao[0] += 1
+                elif posicao[0] < x_destino:
+                    copia_posicao[0] -= 1
+                elif posicao[1] > y_destino:
+                    copia_posicao[1] -= 1
+                elif posicao[1] < y_destino:
+                    copia_posicao[1] += 1
+            elif posicao[2] == 3:
+                #se estava para sul temos que analisar a sua posicao atual face ao destino
+                if posicao[0] > x_destino:
+                    copia_posicao[0] -= 1
+                elif posicao[0] < x_destino:
+                    copia_posicao[0] += 1
+                elif posicao[1] > y_destino:
+                    copia_posicao[1] -= 1
+                elif posicao[1] < y_destino:
+                    copia_posicao[1] += 1
+            elif posicao[2] == 4:
+                #se estava para oeste temos que analisar a sua posicao atual face ao destino
+                if posicao[0] > x_destino:
+                    copia_posicao[0] -= 1
+                elif posicao[0] < x_destino:
+                    copia_posicao[0] += 1
+                elif posicao[1] > y_destino:
+                    copia_posicao[1] -= 1
+                elif posicao[1] < y_destino:
+                    copia_posicao[1] += 1
+            #agora que sabemos para onde ele ia e a sua posicao atual podemos inserir na lista de barreiras
+            # a barreira que ele encontrou
+            barreiras.append([[posicao[0], posicao[1]], [copia_posicao[0], copia_posicao[1]]])  
+            print("Barreiras ", barreiras)
+            #agora sim vamos recalcula a rota
+            caminho_ideal = calcular_rota([posicao[0], posicao[1]], [x_destino, y_destino], barreiras)
+            print("Dado que encontrei uma Barreira Tem se um novo caminho - ", caminho_ideal)
+        else:
+            #o destino pode ter mudado portanto vamos recalcular a rota
+            caminho_ideal = calcular_rota([posicao[0], posicao[1]], [x_destino, y_destino], barreiras)
+            caminho_ideal.pop(0) #remover a posicao atual do robot
+            x_destino = caminho_ideal[0][0]
+            y_destino = caminho_ideal[0][1]
 
 
-        #!importante, falta dar fix na condição de detetar se o h        
+            
         
         

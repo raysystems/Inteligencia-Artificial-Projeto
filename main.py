@@ -9,6 +9,7 @@ from pybricks.parameters import SoundFile
 from pybricks.media.ev3dev import SoundFile, ImageFile
 from modules.andar import  frente, tras, direita, esquerda
 from modules.andarBVM import menor_caminho, mover_para_manteiga, waitforinput, dist_to_square, calc_psols, remove_solucoes_nao_otimas
+from modules.googlemaps import calcular_rota
 import random
 
 
@@ -19,7 +20,7 @@ import random
 
 
 # Robot começa no 1,1
-# X, Y , ORIENTACAO , FLAG 
+# X, Y , ORIENTACAO , FLAG BARREIRA
 posicao = [1,1,1,0]
 posicaoBVM = [5,5]
 posicao_Torradeira = [6,6]
@@ -28,6 +29,7 @@ desviar_barreiras = []
 init_dist = 0 #a ser incrementado segundo input
 psols = [] #soluções possíveis/quadrados a uma distância igual à dada
 
+barreiras = []
 
 
 
@@ -71,14 +73,17 @@ posicao_Manteiga = psols[0]
 
 print(psols)
 
-print("Posicao que vai testar a manteiga Manteiga: ", posicao_Manteiga)
-#gerar uma posicao aleatoria para que nao coincida nem com a manteiga nem o BVM nem com o homem tosta
-#while (posicao_Torradeira == posicao or posicao_Torradeira == posicaoBVM or posicao_Torradeira == posicao_Manteiga):
-  #  posicao_Torradeira = [random.randint(1, 6), random.randint(1, 6)]  
-print("Posicao Torradeira: ", posicao_Torradeira)
+
+
+caminho_ideal = calcular_rota([posicao[0], posicao[1]], psols[0], barreiras)
 
 while(1):
-    turno = mover_para_manteiga(motor_Esquerda, motor_Direita, gyro, sensor_Cor, posicao, posicao_Manteiga, posicaoBVM,posicao_Torradeira,ev3, init_dist, psols,distancia_antiga)
+    posicao_Manteiga = caminho_ideal[0]
+    if posicao_Manteiga[0] == posicao[0] and posicao_Manteiga[1] == posicao[1]:
+        posicao_Manteiga.pop(0)
+        posicao_Manteiga = caminho_ideal[0]
+    print("O robot neste turno vai para : ", posicao_Manteiga)
+    turno = mover_para_manteiga(caminho_ideal, motor_Esquerda, motor_Direita, gyro, sensor_Cor, posicao, posicao_Manteiga, posicaoBVM,posicao_Torradeira,ev3, init_dist, psols,distancia_antiga, barreiras)
     if (turno == -1):
         print("GAME OVER")
         for i in range(20):
@@ -91,45 +96,5 @@ while(1):
             ev3.speaker.beep()
             wait(1000)
         break
-    '''
-    
-
-    randomint = random.randint(1, 3)
-    if randomint == 1:
-        direita(motor_Esquerda, motor_Direita, gyro, posicao, sensor_Cor)
-    elif randomint == 2:
-        esquerda(motor_Esquerda, motor_Direita, gyro, posicao, sensor_Cor)
-    elif randomint == 3:
-        frente(motor_Esquerda, motor_Direita, posicao, sensor_Cor)
-      
-    wait(200)
-    ev3.speaker.beep()
-    print(posicao)
-    print("BVM")
-
- 
-    while(1):
-        wait(200)
-        if sensor_Cor.color() == Color.GREEN:
-            ev3.speaker.beep()
-            break
-        pass
-    
-          '''
-
-
-
-
-
-
-# esquerda(motor_Esquerda, motor_Direita, gyro, posicao, sensor_Cor)
-# ev3.speaker.beep()
-# wait(2000)
-
-# direita(motor_Esquerda, motor_Direita, gyro, posicao, sensor_Cor)
-# ev3.speaker.beep()
-# wait(2000)
-
-
-#beep
+    #se nao encontrou barreira pop numa posicao do caminho
 
