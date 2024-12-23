@@ -53,7 +53,13 @@ def waitforinput(ev3,sensor_cor):
             wait(1000)
         else:
             wait(100)
+        ev3.screen.clear()
+        ev3.screen.print("Distância: ", total_dist)
     wait(1000)
+    ev3.screen.clear()
+    ev3.screen.print("Distância: ", total_dist)
+    #escrever no ecra do ev3 a distância
+    
     return total_dist
 
 def dist_to_square(posicao, square): #devolve dist do robô até o quadrado passado como arg
@@ -73,8 +79,7 @@ def remove_solucoes_nao_otimas(posicao, new_dist, distancia_antiga, sols):
         # Recalcular todas as distâncias
         for sol in sols:
             sol[2] = dist_to_square(posicao, [sol[0], sol[1]])
-            print("POSICAO DO ROBOT ", posicao)
-            print("Distância para ", sol, " é ", sol[2])
+
             
         # Criar uma nova lista com as soluções filtradas
         sols = [sol for sol in sols if sol[2] == new_dist]
@@ -105,6 +110,7 @@ def mover_para_manteiga(motore, motord, gyro, sensor_cor, posicao, posicao_Mante
             elif posicao[1] > y_destino:
                 if posicao[2] == 1:
                     virar_180(motore, motord, gyro, posicao)
+                   
                     frente(motore, motord, posicao, sensor_cor)
                 elif posicao[2] == 2:
                     direita(motore, motord, gyro, posicao, sensor_cor)
@@ -147,18 +153,18 @@ def mover_para_manteiga(motore, motord, gyro, sensor_cor, posicao, posicao_Mante
         # Se o robot chegar à posição da manteiga o jogo acaba e o homem tosta ganha
         if (posicao[0] == posicao_Manteiga[0] and posicao[1] == posicao_Manteiga[1]):
             print("O HOMENZINHO CHEGOU NA MANTEIGA")
-            return 1
+            #return 1
         # se robot entrar na torradeira fica stunned
         if (posicao[0] == posicao_Torradeira[0] and posicao[1] == posicao_Torradeira[1] and stunned == 0):
             print("O HOMENZINHO CHEGOU NA TORRADEIRA")
             stunned += 1
             if (pos_bvm == posicao_Torradeira):
                 print("HOMEM TOSTA ESTAVA NA TORRADEIRA E BVM CHEGOU À TORRADEIRA")
-                return -1
+                #return -1
         elif (posicao[0] == posicao_Torradeira[0] and posicao[1] == posicao_Torradeira[1] and stunned == 1):
             if (pos_bvm == posicao_Torradeira):
                 print("HOMEM TOSTA ESTAVA NA TORRADEIRA E BVM CHEGOU À TORRADEIRA")
-                return -1
+                #return -1
             stunned = 0
         # se o bolor chegar a tostadeira o jogo acaba
         if (pos_bvm[0] == posicao_Torradeira[0] and pos_bvm[1] == posicao_Torradeira[1]):
@@ -180,16 +186,37 @@ def mover_para_manteiga(motore, motord, gyro, sensor_cor, posicao, posicao_Mante
 
         #atualiza as soluções possíveis
         
+
         new_dist = waitforinput(ev3, sensor_cor)
+        
+       
+
         newpsols = remove_solucoes_nao_otimas(posicao,new_dist,distancia_antiga,psols)
         psols = newpsols
+        if(posicao[3] == 1 and len(psols) > 1):
+            #inverte o array psols
+            psols = psols[::-1]
+            posicao[3] = 0
+
         if len(psols) == 1:
             print("Posição final Manteiga: ", psols[0])
+            x_destino = psols[0][0]
+            y_destino = psols[0][1]
         else: 
             print("Psols ", psols)
-        
-        x_destino = psols[0][0]
-        y_destino = psols[0][1]
+            
+            x_destino = psols[0][0]
+            y_destino = psols[0][1]
+        #else:
+        #    posicao[3] = 0
+        #    newpsols = remove_solucoes_nao_otimas(posicao,new_dist,distancia_antiga,psols)
+        #    psols = newpsols
+        #    if len(psols) == 1:
+        #        print("Posição final Manteiga: ", psols[0])
+        #    else: 
+        #        print("Psols ", psols)
+        #    x_destino = psols[-1][0]
+        #    y_destino = psols[-1][1]
 
 
         #!importante, falta dar fix na condição de detetar se o h        

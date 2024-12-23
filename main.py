@@ -15,10 +15,16 @@ import random
 # This program requires LEGO EV3 MicroPython v2.0 or higher.
 # Click "Open user guide" on the EV3 extension tab for more information.
 
+
+
+
 # Robot começa no 1,1
-posicao = [1,1,1]
-posicaoBVM = [6,6]
+# X, Y , ORIENTACAO , FLAG 
+posicao = [1,1,1,0]
+posicaoBVM = [5,5]
 posicao_Torradeira = [6,6]
+
+desviar_barreiras = []
 init_dist = 0 #a ser incrementado segundo input
 psols = [] #soluções possíveis/quadrados a uma distância igual à dada
 
@@ -67,8 +73,8 @@ print(psols)
 
 print("Posicao que vai testar a manteiga Manteiga: ", posicao_Manteiga)
 #gerar uma posicao aleatoria para que nao coincida nem com a manteiga nem o BVM nem com o homem tosta
-while (posicao_Torradeira == posicao or posicao_Torradeira == posicaoBVM or posicao_Torradeira == posicao_Manteiga):
-    posicao_Torradeira = [random.randint(1, 6), random.randint(1, 6)]  
+#while (posicao_Torradeira == posicao or posicao_Torradeira == posicaoBVM or posicao_Torradeira == posicao_Manteiga):
+  #  posicao_Torradeira = [random.randint(1, 6), random.randint(1, 6)]  
 print("Posicao Torradeira: ", posicao_Torradeira)
 
 while(1):
