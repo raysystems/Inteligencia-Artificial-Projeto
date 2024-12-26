@@ -27,53 +27,71 @@ def menor_caminho(pos_bvm, posicao):
     pos_bvm[1] = y_inicial
 
 
-def irparaCoords(x_destino,y_destino, posicao, motore, motord, gyro, sensor_cor):
+def irparaCoords(x_destino, y_destino, posicao, motore, motord, gyro, sensor_cor):
     #primeiro ver a orientacao do robot
     #caso norte
     print("Estou indo para Posicao ", x_destino, y_destino)
+    print("IR PARA COORDS // X: ", x_destino, " Y: ", y_destino)
+    print("IR PARA COORDS // Posicao atual: ", posicao)
     if posicao[2] == 1:
         if posicao[0] > x_destino:
-            esquerda(motore, motord, gyro, sensor_cor)
+            print("Norte: Virando à esquerda")
+            esquerda(motore, motord, gyro, posicao, sensor_cor)
         elif posicao[0] < x_destino:
-            direita(motore, motord, gyro, sensor_cor)
+            print("Norte: Virando à direita")
+            direita(motore, motord, gyro, posicao, sensor_cor)
         elif posicao[1] > y_destino:
-            virar_180(motore, motord, gyro, sensor_cor)
-            frente(motore, motord)
+            print("Norte: Virando 180 graus")
+            virar_180(motore, motord, gyro, posicao)
+            frente(motore, motord, posicao, sensor_cor)
         elif posicao[1] < y_destino:
-            frente(motore, motord)
+            print("Norte: Indo para frente")
+            frente(motore, motord, posicao, sensor_cor)
     #caso sul
     elif posicao[2] == 3:
         if posicao[0] > x_destino:
-            direita(motore, motord, gyro, sensor_cor)
+            print("Sul: Virando à direita")
+            direita(motore, motord, gyro, posicao, sensor_cor)
         elif posicao[0] < x_destino:
-            esquerda(motore, motord, gyro, sensor_cor)
+            print("Sul: Virando à esquerda")
+            esquerda(motore, motord, gyro, posicao, sensor_cor)
         elif posicao[1] > y_destino:
-            frente(motore, motord)
+            print("Sul: Indo para frente")
+            frente(motore, motord, posicao, sensor_cor)
         elif posicao[1] < y_destino:
-            virar_180(motore, motord, gyro, sensor_cor)
-            frente(motore, motord)
+            print("Sul: Virando 180 graus")
+            virar_180(motore, motord, gyro, posicao)
+            frente(motore, motord, posicao, sensor_cor)
     #caso este
     elif posicao[2] == 2:
         if posicao[0] > x_destino:
-            virar_180(motore, motord, gyro, sensor_cor)
-            frente(motore, motord)
+            print("Este: Virando 180 graus")
+            virar_180(motore, motord, gyro, posicao)
+            frente(motore, motord, posicao, sensor_cor)
         elif posicao[0] < x_destino:
-            frente(motore, motord)
+            print("Este: Indo para frente")
+            frente(motore, motord, posicao, sensor_cor)
         elif posicao[1] > y_destino:
-            esquerda(motore, motord, gyro, sensor_cor)
+            print("Este: Virando à direita")
+            direita(motore, motord, gyro, posicao, sensor_cor)
         elif posicao[1] < y_destino:
-            direita(motore, motord, gyro, sensor_cor)
+            print("Este: Virando à esquerda")
+            esquerda(motore, motord, gyro, posicao, sensor_cor)
     #caso oeste
     elif posicao[2] == 4:
         if posicao[0] > x_destino:
-            frente(motore, motord)
+            print("Oeste: Indo para frente")
+            frente(motore, motord, posicao, sensor_cor)
         elif posicao[0] < x_destino:
-            virar_180(motore, motord, gyro, sensor_cor)
-            frente(motore, motord)
+            print("Oeste: Virando 180 graus")
+            virar_180(motore, motord, gyro, posicao)
+            frente(motore, motord, posicao, sensor_cor)
         elif posicao[1] > y_destino:
-            direita(motore, motord, gyro, sensor_cor)
+            print("Oeste: Virando à esquerda")
+            esquerda(motore, motord, gyro, posicao, sensor_cor)
         elif posicao[1] < y_destino:
-            esquerda(motore, motord, gyro, sensor_cor)
+            print("Oeste: Virando à direita")
+            direita(motore, motord, gyro, posicao, sensor_cor)
     
 
 
@@ -151,6 +169,7 @@ def mover_para_manteiga(caminho_ideal, motore, motord, gyro, sensor_cor, posicao
     while (1):
         if stunned != 1:
             # criar funcao ir para coords. x_destino, y_destino
+            
             irparaCoords(x_destino,y_destino, posicao, motore, motord, gyro, sensor_cor)
         else:
             ev3.speaker.beep()
@@ -198,7 +217,92 @@ def mover_para_manteiga(caminho_ideal, motore, motord, gyro, sensor_cor, posicao
             #print("Distancia antiga ", distancia_antiga)
 
 
-    
+        #agora que estao recalculadas as solucoes possiveis, calcular a nova rota
+        # se foi encontrada uma barreira temos que recalcular a rota
+        if (posicao[3] == 1):
+            # a barreira foi encontrada e temos que adiconar a barreira à lista de barreiras
+            # para isso e necessario ter em consideracao a posicao do robot e que ele ia
+            # para a posicao da barreira
+
+            posicao[3] = 0
+            # temos que ver com base no destino e orientacao do robot qual seria a nova coordenada
+            # para onde ele ia
+            copia_posicao = [posicao[0], posicao[1]]
+            if posicao[2] == 1:
+                # se estava para norte temos que analisar a sua posicao atual face ao destino
+                if posicao[0] > x_destino:
+                    copia_posicao[0] -= 1
+                elif posicao[0] < x_destino:
+                    copia_posicao[0] += 1
+                elif posicao[1] > y_destino:
+                    copia_posicao[1] -= 1
+                elif posicao[1] < y_destino:
+                    copia_posicao[1] += 1
+            elif posicao[2] == 2:
+                # se estava para este temos que analisar a sua posicao atual face ao destino
+                if posicao[0] > x_destino:
+                    copia_posicao[0] -= 1
+                elif posicao[0] < x_destino:
+                    copia_posicao[0] += 1
+                elif posicao[1] > y_destino:
+                    copia_posicao[1] -= 1
+                elif posicao[1] < y_destino:
+                    copia_posicao[1] += 1
+            elif posicao[2] == 3:
+                # se estava para sul temos que analisar a sua posicao atual face ao destino
+                if posicao[0] > x_destino:
+                    copia_posicao[0] -= 1
+                elif posicao[0] < x_destino:
+                    copia_posicao[0] += 1
+                elif posicao[1] > y_destino:
+                    copia_posicao[1] -= 1
+                elif posicao[1] < y_destino:
+                    copia_posicao[1] += 1
+            elif posicao[2] == 4:
+                # se estava para oeste temos que analisar a sua posicao atual face ao destino
+                if posicao[0] > x_destino:
+                    copia_posicao[0] -= 1
+                elif posicao[0] < x_destino:
+                    copia_posicao[0] += 1
+                elif posicao[1] > y_destino:
+                    copia_posicao[1] -= 1
+                elif posicao[1] < y_destino:
+                    copia_posicao[1] += 1
+            print("Copia posicao ", copia_posicao)
+            #agora que sabemos para onde ele ia e a sua posicao atual podemos inserir na lista de barreiras
+            # a barreira que ele encontrou
+            barreiras.append([[posicao[0], posicao[1]], [copia_posicao[0], copia_posicao[1]]])  
+            print("Barreiras ", barreiras)
+            #agora sim vamos recalcula a rota
+            caminho_ideal = calcular_rota([posicao[0], posicao[1]], [x_destino, y_destino], barreiras)
+            print("Caminho ideal antes do pop: ", caminho_ideal)
+            if len(caminho_ideal) > 1:
+                caminho_ideal.pop(0)
+            print("Caminho ideal depois do pop: ", caminho_ideal)
+            x_destino = caminho_ideal[0][0]
+            y_destino = caminho_ideal[0][1]
+            copia_x_destino = x_destino
+            copia_y_destino = y_destino
+            print("Dado que encontrei uma Barreira Tem se um novo caminho - ", caminho_ideal)
+        else:
+            #o destino pode ter mudado portanto vamos recalcular a rota
+            #se o destino mudar recalculo a rota caso contrario pop
+            if (copia_x_destino != x_destino or copia_y_destino != y_destino): 
+                caminho_ideal = calcular_rota([posicao[0], posicao[1]], [x_destino, y_destino], barreiras)
+                if len(caminho_ideal) > 1:
+                    caminho_ideal.pop(0) #remover a posicao atual do robot
+                x_destino = caminho_ideal[0][0]
+                y_destino = caminho_ideal[0][1]
+                copia_x_destino = x_destino
+                copia_y_destino = y_destino
+            else:
+                print("Caminho ideal LINHA 298: ", caminho_ideal)
+                if len(caminho_ideal) > 1:
+                    caminho_ideal.pop(0)
+                x_destino = caminho_ideal[0][0]
+                y_destino = caminho_ideal[0][1]
+                copia_x_destino = x_destino
+                copia_y_destino = y_destino
         
 
         new_dist = waitforinput(ev3, sensor_cor)
@@ -210,95 +314,28 @@ def mover_para_manteiga(caminho_ideal, motore, motord, gyro, sensor_cor, posicao
 
         if len(psols) == 1:
             print("Posição final Manteiga: ", psols[0])
-            x_destino = psols[0][0]
-            y_destino = psols[0][1]
-        else: 
-            print("Psols ", psols)
-            
-            x_destino = psols[0][0]
-            y_destino = psols[0][1]
 
-        
-        
-        #agora que estao recalculadas as solucoes possiveis, calcular a nova rota
-        # se foi encontrada uma barreira temos que recalcular a rota
-        if (posicao[3] == 1):
-            # a barreira foi encontrada e temos que adiconar a barreira à lista de barreiras
-            # para isso e necessario ter em consideracao a posicao do robot e que ele ia
-            # para a posicao da barreira
-            
-            posicao[3] = 0
-            # temos que ver com base no destino e orientacao do robot qual seria a nova coordenada
-            # para onde ele ia
-            copia_posicao = [posicao[0], posicao[1]]
-            if posicao[2] == 1:
-                #se estava para norte temos que analisar a sua posicao atual face ao destino
-                if posicao[0] > x_destino:
-                    copia_posicao[0] += 1
-                elif posicao[0] < x_destino:
-                    copia_posicao[0] -= 1
-                elif posicao[1] > y_destino:
-                    copia_posicao[1] += 1
-                elif posicao[1] < y_destino:
-                    copia_posicao[1] -= 1
-            elif posicao[2] == 2:
-                #se estava para este temos que analisar a sua posicao atual face ao destino
-                if posicao[0] > x_destino:
-                    copia_posicao[0] += 1
-                elif posicao[0] < x_destino:
-                    copia_posicao[0] -= 1
-                elif posicao[1] > y_destino:
-                    copia_posicao[1] -= 1
-                elif posicao[1] < y_destino:
-                    copia_posicao[1] += 1
-            elif posicao[2] == 3:
-                #se estava para sul temos que analisar a sua posicao atual face ao destino
-                if posicao[0] > x_destino:
-                    copia_posicao[0] -= 1
-                elif posicao[0] < x_destino:
-                    copia_posicao[0] += 1
-                elif posicao[1] > y_destino:
-                    copia_posicao[1] -= 1
-                elif posicao[1] < y_destino:
-                    copia_posicao[1] += 1
-            elif posicao[2] == 4:
-                #se estava para oeste temos que analisar a sua posicao atual face ao destino
-                if posicao[0] > x_destino:
-                    copia_posicao[0] -= 1
-                elif posicao[0] < x_destino:
-                    copia_posicao[0] += 1
-                elif posicao[1] > y_destino:
-                    copia_posicao[1] -= 1
-                elif posicao[1] < y_destino:
-                    copia_posicao[1] += 1
-            #agora que sabemos para onde ele ia e a sua posicao atual podemos inserir na lista de barreiras
-            # a barreira que ele encontrou
-            barreiras.append([[posicao[0], posicao[1]], [copia_posicao[0], copia_posicao[1]]])  
-            print("Barreiras ", barreiras)
-            #agora sim vamos recalcula a rota
+            x_destino = psols[0][0]
+            y_destino = psols[0][1]
+            # se atualizou o destino vamos recalcular a rota
             caminho_ideal = calcular_rota([posicao[0], posicao[1]], [x_destino, y_destino], barreiras)
             caminho_ideal.pop(0)
             x_destino = caminho_ideal[0][0]
             y_destino = caminho_ideal[0][1]
-            copia_x_destino = x_destino
-            copia_y_destino = y_destino
-            print("Dado que encontrei uma Barreira Tem se um novo caminho - ", caminho_ideal)
-        else:
-            #o destino pode ter mudado portanto vamos recalcular a rota
-            #se o destino mudar recalculo a rota caso contrario pop
-            if (copia_x_destino != x_destino or copia_y_destino != y_destino): 
-                caminho_ideal = calcular_rota([posicao[0], posicao[1]], [x_destino, y_destino], barreiras)
-                caminho_ideal.pop(0) #remover a posicao atual do robot
-                x_destino = caminho_ideal[0][0]
-                y_destino = caminho_ideal[0][1]
-                copia_x_destino = x_destino
-                copia_y_destino = y_destino
-            else:
-                caminho_ideal.pop(0)
-                x_destino = caminho_ideal[0][0]
-                y_destino = caminho_ideal[0][1]
-                copia_x_destino = x_destino
-                copia_y_destino = y_destino
+            print("Caminho ideal PSOLS: ", caminho_ideal)
+        else: 
+            x_destino = psols[0][0]
+            y_destino = psols[0][1]
+            # se atualizou o destino vamos recalcular a rota
+            caminho_ideal = calcular_rota([posicao[0], posicao[1]], [x_destino, y_destino], barreiras)
+            caminho_ideal.pop(0)
+            x_destino = caminho_ideal[0][0]
+            y_destino = caminho_ideal[0][1]
+            print("Caminho ideal PSOLS: ", caminho_ideal)
+
+        
+        
+        
 
 
 

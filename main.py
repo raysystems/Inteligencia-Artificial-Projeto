@@ -79,8 +79,9 @@ caminho_ideal = calcular_rota([posicao[0], posicao[1]], [psols[0][0],psols[0][1]
 print("Caminho ideal: ", caminho_ideal)
 while(1):
     posicao_Manteiga = caminho_ideal[0]
+   
     if posicao_Manteiga[0] == posicao[0] and posicao_Manteiga[1] == posicao[1]:
-        posicao_Manteiga.pop(0)
+        caminho_ideal.pop(0)
         posicao_Manteiga = caminho_ideal[0]
     print("O robot neste turno vai para : ", posicao_Manteiga)
     turno = mover_para_manteiga(caminho_ideal, motor_Esquerda, motor_Direita, gyro, sensor_Cor, posicao, posicao_Manteiga, posicaoBVM,posicao_Torradeira,ev3, init_dist, psols,distancia_antiga, barreiras)

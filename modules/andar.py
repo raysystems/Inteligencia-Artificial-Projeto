@@ -16,6 +16,7 @@ def trocarOrientacao(direcao, posicao):
         posicao[2] = 1 if posicao[2] + 1 > 4 else posicao[2] + 1
 
 def direita(motore, motord, gyro, posicao, sensor_cor):
+    gyro.reset_angle(0)
     if posicao[2] == 1 and posicao[0] <= 5:
         while gyro.angle() <= 90:
             motore.run(-100)
@@ -130,6 +131,7 @@ def direita(motore, motord, gyro, posicao, sensor_cor):
         trocarOrientacao("D", posicao)
 
 def esquerda(motore, motord, gyro, posicao, sensor_cor):
+    gyro.reset_angle(0)
     if posicao[2] == 1 and posicao[0] > 1:
 
         while gyro.angle() >= -87:
@@ -375,4 +377,51 @@ def virar_180(motore, motord, gyro, posicao):
         motord.brake()
         
         trocarOrientacao("D", posicao)
-  
+    elif posicao[2] == 2:
+        gyro.reset_angle(0)
+        while gyro.angle() <= 90:
+            motore.run(-100)
+            motord.run(100)
+        motore.brake()
+        motord.brake()
+        wait(2000)
+        gyro.reset_angle(0)
+        trocarOrientacao("D", posicao)
+        while gyro.angle() <= 90:
+            motore.run(-100)
+            motord.run(100)
+        motore.brake()
+        motord.brake()
+        trocarOrientacao("D", posicao)
+    elif posicao[2] == 3:
+        gyro.reset_angle(0)
+        while gyro.angle() <= 90:
+            motore.run(-100)
+            motord.run(100)
+        motore.brake()
+        motord.brake()
+        wait(2000)
+        trocarOrientacao("D", posicao)
+        gyro.reset_angle(0)
+        while gyro.angle() <= 90:
+            motore.run(-100)
+            motord.run(100)
+        motore.brake()
+        motord.brake()
+        trocarOrientacao("D", posicao)
+    elif posicao[2] == 4:
+        gyro.reset_angle(0)
+        while gyro.angle() <= 90:
+            motore.run(-100)
+            motord.run(100)
+        motore.brake()
+        motord.brake()
+        wait(2000)
+        gyro.reset_angle(0)
+        trocarOrientacao("D", posicao)
+        while gyro.angle() <= 90:
+            motore.run(-100)
+            motord.run(100)
+        motore.brake()
+        motord.brake()
+        trocarOrientacao("D", posicao)
