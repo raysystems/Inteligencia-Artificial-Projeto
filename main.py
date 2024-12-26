@@ -71,12 +71,12 @@ psols = calc_psols(posicao, init_dist)
 
 posicao_Manteiga = psols[0]
 
-print(psols)
+print('sols ',psols)
 
 
 
-caminho_ideal = calcular_rota([posicao[0], posicao[1]], psols[0], barreiras)
-
+caminho_ideal = calcular_rota([posicao[0], posicao[1]], [psols[0][0],psols[0][1]], barreiras)
+print("Caminho ideal: ", caminho_ideal)
 while(1):
     posicao_Manteiga = caminho_ideal[0]
     if posicao_Manteiga[0] == posicao[0] and posicao_Manteiga[1] == posicao[1]:

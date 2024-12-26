@@ -81,8 +81,11 @@ def calcular_rota(posicao_atual, destino, barreiras):
     """
     profundidade_maxima = 3
     caminho_seguido = []
+    print("Destino: ", destino) 
+    print("Posicao atual: ", posicao_atual)
 
     while True:
+        print("Tentando com profundidade máxima .")
         raiz = construir_arvore(posicao_atual, profundidade_maxima, barreiras)
         caminho = bfs_encontrar_destino(raiz, destino, barreiras)
         if not caminho:

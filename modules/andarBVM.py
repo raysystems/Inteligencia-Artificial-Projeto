@@ -30,6 +30,7 @@ def menor_caminho(pos_bvm, posicao):
 def irparaCoords(x_destino,y_destino, posicao, motore, motord, gyro, sensor_cor):
     #primeiro ver a orientacao do robot
     #caso norte
+    print("Estou indo para Posicao ", x_destino, y_destino)
     if posicao[2] == 1:
         if posicao[0] > x_destino:
             esquerda(motore, motord, gyro, sensor_cor)
