@@ -33,6 +33,7 @@ def irparaCoords(x_destino, y_destino, posicao, motore, motord, gyro, sensor_cor
     print("Estou indo para Posicao ", x_destino, y_destino)
     print("IR PARA COORDS // X: ", x_destino, " Y: ", y_destino)
     print("IR PARA COORDS // Posicao atual: ", posicao)
+
     if posicao[2] == 1:
         if posicao[0] > x_destino:
             print("Norte: Virando à esquerda")
@@ -159,16 +160,18 @@ def remove_solucoes_nao_otimas(posicao, new_dist, distancia_antiga, sols):
 
 
 
-def mover_para_manteiga(caminho_ideal, motore, motord, gyro, sensor_cor, posicao, posicao_Manteiga, pos_bvm, posicao_Torradeira,ev3, init_dist, psols, distancia_antiga, barreiras):
+def jogar(caminho_ideal, motore, motord, gyro, sensor_cor, posicao, posicao_Manteiga, pos_bvm, posicao_Torradeira,ev3, init_dist, psols, distancia_antiga, barreiras,ir_para_manteiga):
     x_destino = posicao_Manteiga[0]
     y_destino = posicao_Manteiga[1]
     copia_x_destino = x_destino
     copia_y_destino = y_destino
+    estrategia1_fase1 = 0
     stunned = 0
     new_dist = init_dist
     while (1):
         if stunned != 1:
             # criar funcao ir para coords. x_destino, y_destino
+           
             
             irparaCoords(x_destino,y_destino, posicao, motore, motord, gyro, sensor_cor)
         else:
@@ -274,11 +277,20 @@ def mover_para_manteiga(caminho_ideal, motore, motord, gyro, sensor_cor, posicao
             barreiras.append([[posicao[0], posicao[1]], [copia_posicao[0], copia_posicao[1]]])  
             print("Barreiras ", barreiras)
             #agora sim vamos recalcula a rota
+            if (posicao[0] != 3 and posicao[1] != 1 and ir_para_manteiga > 5):
+                x_destino = 3
+                y_destino = 1
+            if (posicao[0] == 3 and posicao[1] == 1 ):
+                estrategia1_fase1 = 1
+            if (posicao[0] == 3 and posicao[1] <= 5 and ir_para_manteiga > 5 and estrategia1_fase1 == 1):
+                x_destino = 3
+                y_destino = 5
             caminho_ideal = calcular_rota([posicao[0], posicao[1]], [x_destino, y_destino], barreiras)
             print("Caminho ideal antes do pop: ", caminho_ideal)
             if len(caminho_ideal) > 1:
                 caminho_ideal.pop(0)
             print("Caminho ideal depois do pop: ", caminho_ideal)
+
             x_destino = caminho_ideal[0][0]
             y_destino = caminho_ideal[0][1]
             copia_x_destino = x_destino
@@ -287,6 +299,14 @@ def mover_para_manteiga(caminho_ideal, motore, motord, gyro, sensor_cor, posicao
         else:
             #o destino pode ter mudado portanto vamos recalcular a rota
             #se o destino mudar recalculo a rota caso contrario pop
+            if (posicao[0] != 3 and posicao[1] != 1 and ir_para_manteiga > 5):
+                x_destino = 3
+                y_destino = 1
+            if (posicao[0] == 3 and posicao[1] == 1 ):
+                estrategia1_fase1 = 1
+            if (posicao[0] == 3 and posicao[1] <= 5 and ir_para_manteiga > 5 and estrategia1_fase1 == 1):
+                x_destino = 3
+                y_destino = 5
             if (copia_x_destino != x_destino or copia_y_destino != y_destino): 
                 caminho_ideal = calcular_rota([posicao[0], posicao[1]], [x_destino, y_destino], barreiras)
                 if len(caminho_ideal) > 1:
@@ -314,24 +334,29 @@ def mover_para_manteiga(caminho_ideal, motore, motord, gyro, sensor_cor, posicao
 
         if len(psols) == 1:
             print("Posição final Manteiga: ", psols[0])
+            #rever isto
+            if (ir_para_manteiga <= 5):
+                print("Atualizado destino para distancia menos de 5: ", psols[0])
+                x_destino = psols[0][0]
+                y_destino = psols[0][1]
+                # se atualizou o destino vamos recalcular a rota
+                caminho_ideal = calcular_rota([posicao[0], posicao[1]], [x_destino, y_destino], barreiras)
+                caminho_ideal.pop(0)
+                x_destino = caminho_ideal[0][0]
+                y_destino = caminho_ideal[0][1]
+                print("Caminho ideal PSOLS: ", caminho_ideal)
+        elif(ir_para_manteiga <= 5): 
+            print("Atualizado destino para distancia menos de 5: ", psols[0])
+            x_destino = psols[0][0]
+            y_destino = psols[0][1]
+            # se atualizou o destino vamos recalcular a rota
+            caminho_ideal = calcular_rota([posicao[0], posicao[1]], [x_destino, y_destino], barreiras)
+            caminho_ideal.pop(0)
+            x_destino = caminho_ideal[0][0]
+            y_destino = caminho_ideal[0][1]
+            print("Caminho ideal PSOLS: ", caminho_ideal)
 
-            x_destino = psols[0][0]
-            y_destino = psols[0][1]
-            # se atualizou o destino vamos recalcular a rota
-            caminho_ideal = calcular_rota([posicao[0], posicao[1]], [x_destino, y_destino], barreiras)
-            caminho_ideal.pop(0)
-            x_destino = caminho_ideal[0][0]
-            y_destino = caminho_ideal[0][1]
-            print("Caminho ideal PSOLS: ", caminho_ideal)
-        else: 
-            x_destino = psols[0][0]
-            y_destino = psols[0][1]
-            # se atualizou o destino vamos recalcular a rota
-            caminho_ideal = calcular_rota([posicao[0], posicao[1]], [x_destino, y_destino], barreiras)
-            caminho_ideal.pop(0)
-            x_destino = caminho_ideal[0][0]
-            y_destino = caminho_ideal[0][1]
-            print("Caminho ideal PSOLS: ", caminho_ideal)
+        
 
         
         

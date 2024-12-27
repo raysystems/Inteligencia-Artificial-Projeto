@@ -8,7 +8,7 @@ from pybricks.robotics import DriveBase
 from pybricks.parameters import SoundFile
 from pybricks.media.ev3dev import SoundFile, ImageFile
 from modules.andar import  frente, tras, direita, esquerda
-from modules.andarBVM import menor_caminho, mover_para_manteiga, waitforinput, dist_to_square, calc_psols, remove_solucoes_nao_otimas
+from modules.andarBVM import menor_caminho, jogar, waitforinput, dist_to_square, calc_psols, remove_solucoes_nao_otimas
 from modules.googlemaps import calcular_rota
 import random
 
@@ -69,22 +69,29 @@ distancia_antiga = init_dist
 
 psols = calc_psols(posicao, init_dist)
 
-posicao_Manteiga = psols[0]
+if (init_dist <= 5):
+    posicao_Manteiga = psols[0]
+    caminho_ideal = calcular_rota([posicao[0], posicao[1]], [psols[0][0],psols[0][1]], barreiras)
+    print("Caminho ideal: ", caminho_ideal)
+    print('sols ',psols)
+else:
+    print("A distância é muito grande")
+    posicao_Manteiga = [3,1]
+    caminho_ideal = calcular_rota([posicao[0], posicao[1]], posicao_Manteiga, barreiras)
 
-print('sols ',psols)
 
 
 
-caminho_ideal = calcular_rota([posicao[0], posicao[1]], [psols[0][0],psols[0][1]], barreiras)
-print("Caminho ideal: ", caminho_ideal)
+
 while(1):
     posicao_Manteiga = caminho_ideal[0]
-   
+    print("Caminho ideal primeira iteracao : ", caminho_ideal)
     if posicao_Manteiga[0] == posicao[0] and posicao_Manteiga[1] == posicao[1]:
         caminho_ideal.pop(0)
         posicao_Manteiga = caminho_ideal[0]
     print("O robot neste turno vai para : ", posicao_Manteiga)
-    turno = mover_para_manteiga(caminho_ideal, motor_Esquerda, motor_Direita, gyro, sensor_Cor, posicao, posicao_Manteiga, posicaoBVM,posicao_Torradeira,ev3, init_dist, psols,distancia_antiga, barreiras)
+    ir_para_manteiga = init_dist
+    turno = jogar(caminho_ideal, motor_Esquerda, motor_Direita, gyro, sensor_Cor, posicao, posicao_Manteiga, posicaoBVM,posicao_Torradeira,ev3, init_dist, psols,distancia_antiga, barreiras, ir_para_manteiga)
     if (turno == -1):
         print("GAME OVER")
         for i in range(20):
