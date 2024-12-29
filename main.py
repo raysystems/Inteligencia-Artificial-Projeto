@@ -49,7 +49,7 @@ gyro = GyroSensor(Port.S4)
 
 gyro.reset_angle(0)
 
-motor_Direita = Motor(Port.A)
+motor_Direita = Motor(Port.B)
 
 motor_Esquerda = Motor(Port.D)
 

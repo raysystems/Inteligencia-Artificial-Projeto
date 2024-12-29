@@ -93,6 +93,9 @@ def irparaCoords(x_destino, y_destino, posicao, motore, motord, gyro, sensor_cor
         elif posicao[1] < y_destino:
             print("Oeste: Virando à direita")
             direita(motore, motord, gyro, posicao, sensor_cor)
+    #parar os motores
+    motore.stop()
+    motord.stop()
     
 
 
@@ -190,12 +193,27 @@ def jogar(caminho_ideal, motore, motord, gyro, sensor_cor, posicao, posicao_Mant
     possiveis_posicoes_torradeira = []
     torradeira = [0,0]
     fase4 = 0
+    turnos_morte = 0
+    sentiucalor = 0
+    caiu_na_torradeira = 0
+    ficou_preso_jogada = 0
     while (1):
-        if posicao[4] ==1:
-            ev3.speaker.beep()
-            wait(2000)
-            ev3.speaker.beep()
-            wait(2000)
+
+        if (posicao[0] == 3 and posicao[1] == 5 and ir_para_manteiga > 5):
+                estrategia1_fase1 = 4
+
+        if ficou_preso_jogada == 0 and stunned == 0:
+            if posicao[0] == torradeira[0] and posicao[1] == torradeira[1]:
+                ficou_preso_jogada = 1
+                ev3.speaker.beep()
+                wait(2000)
+                ev3.speaker.beep()
+                wait(2000)
+                ev3.speaker.beep()
+                wait(2000)
+                stunned = 1
+        elif ficou_preso_jogada == 1 and stunned == 0:
+            ficou_preso_jogada = 0    
         
         if counter_pos_anterior == 0:
             pos_anterior = [posicao[0], posicao[1]]
@@ -210,6 +228,7 @@ def jogar(caminho_ideal, motore, motord, gyro, sensor_cor, posicao, posicao_Mant
             calculaPossiveisPsolsTorradeira(posicao, possiveis_posicoes_torradeira,pos_anterior)
             estrategia1_fase1 = 2
             posicao[4] = 0
+            sentiucalor = 1
             #foi sentido o calor a torradeira irradia calor de uma casa nao nas diagonais portanto
             #se o robot estiver numa casa adjacente a torradeira ele sente o calor
             #calcular possiveis posicoes da torradeira
@@ -220,12 +239,13 @@ def jogar(caminho_ideal, motore, motord, gyro, sensor_cor, posicao, posicao_Mant
 
         if estrategia1_fase1 == 2:
             #vamos ir para uma possivel posicao da torradeira e mais longe do pos_bvm
+            
             if len(possiveis_posicoes_torradeira) > 0:
                 #se existem possiveis posicoes da torradeira
 
                 for i in possiveis_posicoes_torradeira:
                     print("Posicao BVM ", pos_bvm)
-                    if dist_to_square(pos_bvm, i) < 3:
+                    if dist_to_square(pos_bvm, i) < 3 and i[0] != 3:
 
                         print ("Distancia do BVM ", dist_to_square(pos_bvm, i), " para a posicao ", i)
                         possiveis_posicoes_torradeira.pop(possiveis_posicoes_torradeira.index(i))
@@ -252,6 +272,17 @@ def jogar(caminho_ideal, motore, motord, gyro, sensor_cor, posicao, posicao_Mant
                     
             else:
                 estrategia1_fase1 = 3
+            if posicao[4] == 1 and estrategia1_fase1 == 2:
+
+                #caimos na torradeira
+                print("Caiu na torradeira")
+                caiu_na_torradeira = 1
+                
+                posicao[4] = 0
+                torradeira = [posicao[0], posicao[1]]   
+                print("Torradeira ", torradeira)
+                estrategia1_fase1 = 3 
+
         if estrategia1_fase1 == 4:
             print("Estrategia 1 fase 4")
             #andar uma casa para cima e outra para baixo para baixo
@@ -297,20 +328,46 @@ def jogar(caminho_ideal, motore, motord, gyro, sensor_cor, posicao, posicao_Mant
 
                 #caimos na torradeira
                 print("Caiu na torradeira")
-                stunned = 1
+                caiu_na_torradeira = 1
+                
                 posicao[4] = 0
                 torradeira = [posicao[0], posicao[1]]   
+                print("Torradeira ", torradeira)
                 estrategia1_fase1 = 3 
-        if estrategia1_fase1 == 3:
+
+        if estrategia1_fase1 == 3 and stunned == 0:
             print("Estrategia 1 fase 3 MATAR BVM")
+            if turnos_morte == 0:
+                x_destino = torradeira[0] - 1
+                y_destino = torradeira[1]
+                caminho = calcular_rota([posicao[0], posicao[1]], [x_destino, y_destino], barreiras)
+                caminho.pop(0)
+                x_destino = caminho[0][0]
+                y_destino = caminho[0][1]
+                print("Caminho ideal Fase 3: ", caminho)
+                turnos_morte += 1
+            elif turnos_morte == 1:
+                turnos_morte = 0
+                x_destino = torradeira[0] + 1
+                y_destino = torradeira[1]
+                caminho = calcular_rota([posicao[0], posicao[1]], [x_destino, y_destino], barreiras)
+                caminho.pop(0)
+                x_destino = caminho[0][0]
+                y_destino = caminho[0][1]
+                print("Caminho ideal Fase 3: ", caminho)
+
+            
         if stunned != 1:
             # criar funcao ir para coords. x_destino, y_destino
 
             
-            
-            irparaCoords(x_destino,y_destino, posicao, motore, motord, gyro, sensor_cor)
+            if caiu_na_torradeira != 1:
+                irparaCoords(x_destino,y_destino, posicao, motore, motord, gyro, sensor_cor)
+            else:
+                caiu_na_torradeira = 0
+                ev3.speaker.beep()
         else:
-            
+            stunned = 0
             ev3.speaker.beep()
             wait(2000)
 
@@ -358,7 +415,7 @@ def jogar(caminho_ideal, motore, motord, gyro, sensor_cor, posicao, posicao_Mant
 
         #agora que estao recalculadas as solucoes possiveis, calcular a nova rota
         # se foi encontrada uma barreira temos que recalcular a rota
-        if (posicao[3] == 1):
+        if (posicao[3] == 1 and estrategia1_fase1 != 4):
             # a barreira foi encontrada e temos que adiconar a barreira à lista de barreiras
             # para isso e necessario ter em consideracao a posicao do robot e que ele ia
             # para a posicao da barreira
@@ -421,6 +478,8 @@ def jogar(caminho_ideal, motore, motord, gyro, sensor_cor, posicao, posicao_Mant
             if (posicao[0] == 3 and posicao[1] <= 5 and ir_para_manteiga > 5 and estrategia1_fase1 == 1):
                 x_destino = 3
                 y_destino = 5
+            if (posicao[0] == 3 and posicao[1] == 5 and ir_para_manteiga > 5):
+                estrategia1_fase1 = 4
             caminho_ideal = calcular_rota([posicao[0], posicao[1]], [x_destino, y_destino], barreiras)
             print("Caminho ideal antes do pop: ", caminho_ideal)
             if len(caminho_ideal) > 1:
@@ -432,7 +491,7 @@ def jogar(caminho_ideal, motore, motord, gyro, sensor_cor, posicao, posicao_Mant
             copia_x_destino = x_destino
             copia_y_destino = y_destino
             print("Dado que encontrei uma Barreira Tem se um novo caminho - ", caminho_ideal)
-        else:
+        elif (estrategia1_fase1 != 4):
             #o destino pode ter mudado portanto vamos recalcular a rota
             #se o destino mudar recalculo a rota caso contrario pop
             if (posicao[0] != 3 and posicao[1] != 1 and ir_para_manteiga > 5):
@@ -443,6 +502,8 @@ def jogar(caminho_ideal, motore, motord, gyro, sensor_cor, posicao, posicao_Mant
             if (posicao[0] == 3 and posicao[1] <= 5 and ir_para_manteiga > 5 and estrategia1_fase1 == 1):
                 x_destino = 3
                 y_destino = 5
+            if (posicao[0] == 3 and posicao[1] == 5 and ir_para_manteiga > 5):
+                estrategia1_fase1 = 4
             if (copia_x_destino != x_destino or copia_y_destino != y_destino): 
                 caminho_ideal = calcular_rota([posicao[0], posicao[1]], [x_destino, y_destino], barreiras)
                 if len(caminho_ideal) > 1:
