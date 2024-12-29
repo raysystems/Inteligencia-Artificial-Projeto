@@ -20,9 +20,9 @@ import random
 
 
 # Robot começa no 1,1
-# X, Y , ORIENTACAO , FLAG BARREIRA
-posicao = [1,1,1,0]
-posicaoBVM = [5,5]
+# X, Y , ORIENTACAO , FLAG BARREIRA, FLAG CALOR TORRADEIRA
+posicao = [1,1,1,0,0]
+posicaoBVM = [6,6]
 posicao_Torradeira = [6,6]
 
 desviar_barreiras = []
