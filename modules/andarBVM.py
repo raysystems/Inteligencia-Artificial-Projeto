@@ -202,7 +202,7 @@ def jogar(caminho_ideal, motore, motord, gyro, sensor_cor, posicao, posicao_Mant
         if (posicao[0] == 3 and posicao[1] == 5 and ir_para_manteiga > 5):
                 estrategia1_fase1 = 4
 
-        if ficou_preso_jogada == 0 and stunned == 0:
+        if ficou_preso_jogada == 0 and sentiucalor == 1:
             if posicao[0] == torradeira[0] and posicao[1] == torradeira[1]:
                 ficou_preso_jogada = 1
                 ev3.speaker.beep()
@@ -212,7 +212,7 @@ def jogar(caminho_ideal, motore, motord, gyro, sensor_cor, posicao, posicao_Mant
                 ev3.speaker.beep()
                 wait(2000)
                 stunned = 1
-        elif ficou_preso_jogada == 1 and stunned == 0:
+        elif ficou_preso_jogada == 1 and sentiucalor == 1:
             ficou_preso_jogada = 0    
         
         if counter_pos_anterior == 0:
@@ -322,7 +322,7 @@ def jogar(caminho_ideal, motore, motord, gyro, sensor_cor, posicao, posicao_Mant
                 y_destino = caminho[0][1]
                 print("Caminho ideal Fase 4: ", caminho) 
         if estrategia1_fase1 == 2:
-            #andar para cima e para baixo ate terminar as 25 jogadas
+           
             print("Estrategia 1 fase 2 IR PARA A TORRADEIRA")
             if posicao[4] == 1:
 
@@ -335,8 +335,9 @@ def jogar(caminho_ideal, motore, motord, gyro, sensor_cor, posicao, posicao_Mant
                 print("Torradeira ", torradeira)
                 estrategia1_fase1 = 3 
 
-        if estrategia1_fase1 == 3 and stunned == 0:
+        if estrategia1_fase1 == 3 and caiu_na_torradeira == 0 and stunned == 0:
             print("Estrategia 1 fase 3 MATAR BVM")
+            print("Turnos morte ", turnos_morte)
             if turnos_morte == 0:
                 x_destino = torradeira[0] - 1
                 y_destino = torradeira[1]
@@ -355,7 +356,9 @@ def jogar(caminho_ideal, motore, motord, gyro, sensor_cor, posicao, posicao_Mant
                 x_destino = caminho[0][0]
                 y_destino = caminho[0][1]
                 print("Caminho ideal Fase 3: ", caminho)
-
+        else:
+            print("Estrategia 1 fase 3")
+            print("Nao foi possivel matar o BVM, estou na torradeira")
             
         if stunned != 1:
             # criar funcao ir para coords. x_destino, y_destino
@@ -365,6 +368,7 @@ def jogar(caminho_ideal, motore, motord, gyro, sensor_cor, posicao, posicao_Mant
                 irparaCoords(x_destino,y_destino, posicao, motore, motord, gyro, sensor_cor)
             else:
                 caiu_na_torradeira = 0
+                ficou_preso_jogada = 1
                 ev3.speaker.beep()
         else:
             stunned = 0
