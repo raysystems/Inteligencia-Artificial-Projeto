@@ -32,10 +32,12 @@ def direita(motore, motord, gyro, posicao, sensor_cor):
         motord.brake()
         motore.run(180)
         motord.run(180)
-        while sensor_cor.color() != Color.BLACK:
+        while 1:
             if verificarExisteCalorTorradeira(sensor_cor, posicao) == 1:
                 break
-            if verificarExisteBarreiraQ(sensor_cor):
+            elif sensor_cor.color() == Color.BLACK:
+                break
+            elif verificarExisteBarreiraQ(sensor_cor):
                 # Encontrou uma barreira temos que guardar as suas proximas acoes para desviar
                 posicao[3] = 1 # ativar flag que encontrou barreira
                 motore.brake()
@@ -63,10 +65,12 @@ def direita(motore, motord, gyro, posicao, sensor_cor):
         motord.brake()
         motore.run(180)
         motord.run(180)
-        while sensor_cor.color() != Color.BLACK:
+        while 1:
             if verificarExisteCalorTorradeira(sensor_cor, posicao) == 1:
                 break
-            if verificarExisteBarreiraQ(sensor_cor):
+            elif sensor_cor.color() == Color.BLACK:
+                break
+            elif verificarExisteBarreiraQ(sensor_cor):
                 posicao[3] = 1 # ativar flag que encontrou barreira
                 motore.brake()
                 motord.brake()
@@ -93,10 +97,12 @@ def direita(motore, motord, gyro, posicao, sensor_cor):
         motord.brake()
         motore.run(180)
         motord.run(180)
-        while sensor_cor.color() != Color.BLACK:
+        while 1:
             if verificarExisteCalorTorradeira(sensor_cor, posicao) == 1:
                 break
-            if verificarExisteBarreiraQ(sensor_cor):
+            elif sensor_cor.color() == Color.BLACK:
+                break
+            elif verificarExisteBarreiraQ(sensor_cor):
                 posicao[3] = 1 # ativar flag que encontrou barreira
                 motore.brake()
                 motord.brake()
@@ -123,10 +129,12 @@ def direita(motore, motord, gyro, posicao, sensor_cor):
         motord.brake()
         motore.run(180)
         motord.run(180)
-        while sensor_cor.color() != Color.BLACK:
+        while 1:
             if verificarExisteCalorTorradeira(sensor_cor, posicao) == 1:
                 break
-            if verificarExisteBarreiraQ(sensor_cor):
+            elif sensor_cor.color() == Color.BLACK:
+                break
+            elif verificarExisteBarreiraQ(sensor_cor):
                 posicao[3] = 1 # ativar flag que encontrou barreira
                 motore.brake()
                 motord.brake()
@@ -158,10 +166,12 @@ def esquerda(motore, motord, gyro, posicao, sensor_cor):
         wait(1000)
         motore.run(180)
         motord.run(180)
-        while sensor_cor.color() != Color.BLACK:
+        while 1:
             if verificarExisteCalorTorradeira(sensor_cor, posicao) == 1:
                 break
-            if verificarExisteBarreiraQ(sensor_cor):
+            elif sensor_cor.color() == Color.BLACK:
+                break
+            elif verificarExisteBarreiraQ(sensor_cor):
                 posicao[3] = 1 # ativar flag que encontrou barreira
                 motore.brake()
                 motord.brake()
@@ -190,10 +200,12 @@ def esquerda(motore, motord, gyro, posicao, sensor_cor):
      
        
 
-        while sensor_cor.color() != Color.BLACK:
+        while 1:
             if verificarExisteCalorTorradeira(sensor_cor, posicao) == 1:
                 break
-            if verificarExisteBarreiraQ(sensor_cor):
+            elif sensor_cor.color() == Color.BLACK:
+                break
+            elif verificarExisteBarreiraQ(sensor_cor):
                 posicao[3] = 1 # ativar flag que encontrou barreira
                 motore.brake()
                 motord.brake()
@@ -218,10 +230,12 @@ def esquerda(motore, motord, gyro, posicao, sensor_cor):
         motord.brake()
         motore.run(180)
         motord.run(180)
-        while sensor_cor.color() != Color.BLACK:
+        while 1:
             if verificarExisteCalorTorradeira(sensor_cor, posicao) == 1:
                 break
-            if verificarExisteBarreiraQ(sensor_cor):
+            elif sensor_cor.color() == Color.BLACK:
+                break
+            elif verificarExisteBarreiraQ(sensor_cor):
                 posicao[3] = 1 # ativar flag que encontrou barreira
                 motore.brake()
                 motord.brake()
@@ -246,10 +260,12 @@ def esquerda(motore, motord, gyro, posicao, sensor_cor):
         motord.brake()
         motore.run(180)
         motord.run(180)
-        while sensor_cor.color() != Color.BLACK:
+        while 1:
             if verificarExisteCalorTorradeira(sensor_cor, posicao) == 1:
                 break
-            if verificarExisteBarreiraQ(sensor_cor):
+            elif sensor_cor.color() == Color.BLACK:
+                break
+            elif verificarExisteBarreiraQ(sensor_cor):
                 posicao[3] = 1 # ativar flag que encontrou barreira
                 motore.brake()
                 motord.brake()
@@ -271,10 +287,12 @@ def frente(motore, motord, posicao, sensor_cor):
         motore.run(180)
         motord.run(180)
         wait(800)
-        while sensor_cor.color() != Color.BLACK:
+        while 1:
             if verificarExisteCalorTorradeira(sensor_cor, posicao) == 1:
                 break
-            if verificarExisteBarreiraQ(sensor_cor):
+            elif sensor_cor.color() == Color.BLACK:
+                break
+            elif verificarExisteBarreiraQ(sensor_cor):
                 posicao[3] = 1 # ativar flag que encontrou barreira
                 motore.brake()
                 motord.brake()
@@ -293,10 +311,12 @@ def frente(motore, motord, posicao, sensor_cor):
         motore.run(180)
         motord.run(180)
         wait(800)
-        while sensor_cor.color() != Color.BLACK:
+        while 1:
             if verificarExisteCalorTorradeira(sensor_cor, posicao) == 1:
                 break
-            if verificarExisteBarreiraQ(sensor_cor):
+            elif sensor_cor.color() == Color.BLACK:
+                break
+            elif verificarExisteBarreiraQ(sensor_cor):
                 posicao[3] = 1 # ativar flag que encontrou barreira
                 motore.brake()
                 motord.brake()
@@ -315,10 +335,12 @@ def frente(motore, motord, posicao, sensor_cor):
         motore.run(180)
         motord.run(180)
         wait(800)
-        while sensor_cor.color() != Color.BLACK:
+        while 1:
             if verificarExisteCalorTorradeira(sensor_cor, posicao) == 1:
                 break
-            if verificarExisteBarreiraQ(sensor_cor):
+            elif sensor_cor.color() == Color.BLACK:
+                break
+            elif verificarExisteBarreiraQ(sensor_cor):
                 posicao[3] = 1 # ativar flag que encontrou barreira
                 motore.brake()
                 motord.brake()
@@ -337,10 +359,12 @@ def frente(motore, motord, posicao, sensor_cor):
         motore.run(180)
         motord.run(180)
         wait(800)
-        while sensor_cor.color() != Color.BLACK:
+        while 1:
             if verificarExisteCalorTorradeira(sensor_cor, posicao) == 1:
                 break
-            if verificarExisteBarreiraQ(sensor_cor):
+            elif sensor_cor.color() == Color.BLACK:
+                break
+            elif verificarExisteBarreiraQ(sensor_cor):
                 posicao[3] = 1 # ativar flag que encontrou barreira
                 motore.brake()
                 motord.brake()
