@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizador do Arrastaussauros</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px;
+        }
+        #board {
+            display: grid;
+            grid-template-columns: repeat(7, 70px); /* 6 columns + 1 for row numbers */
+            grid-template-rows: repeat(7, 70px); /* 6 rows + 1 for column numbers */
+            gap: 2px;
+            margin: 20px;
+        }
+        .cell {
+            width: 70px;
+            height: 70px;
+            border: 1px solid #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            position: relative;
+        }
+        .robot {
+            width: 100%;
+            height: 100%;
+            background-image: url('robo.jpg'); /* Path to your robot image */
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            transform-origin: center;
+        }
+        .adversary {
+            width: 100%;
+            height: 100%;
+            background-color: red;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            transform-origin: center;
+        }
+        .north {
+            transform: rotate(0deg);
+        }
+        .east {
+            transform: rotate(90deg);
+        }
+        .south {
+            transform: rotate(180deg);
+        }
+        .west {
+            transform: rotate(-90deg);
+        }
+        .step-counter {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            background-color: white;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Robot IA Arrastaussauros</h1>
+    <div id="board"></div>
+
+    <script>
+        let stepCounter = 0;
+
+        // Initialize the board with coordinates
+        function createBoard() {
+            const board = document.getElementById("board");
+            board.innerHTML = ""; // Clear the board
+
+            // Create the top row with column numbers
+            for (let j = 0; j <= 6; j++) {
+                const cell = document.createElement("div");
+                cell.classList.add("cell");
+                if (j > 0) {
+                    cell.textContent = j;
+                }
+                board.appendChild(cell);
+            }
+
+            // Create the rest of the board with row numbers and cells
+            for (let i = 6; i >= 1; i--) { // Rows (reverse for y-axis)
+                for (let j = 0; j <= 6; j++) { // Columns
+                    const cell = document.createElement("div");
+                    cell.classList.add("cell");
+                    if (j === 0) {
+                        cell.textContent = i;
+                    } else {
+                        cell.dataset.x = j;
+                        cell.dataset.y = i;
+                    }
+                    board.appendChild(cell);
+                }
+            }
+        }
+
+        // Load coordinates from a file
+        async function fetchCoordinates() {
+            const response = await fetch('posicoes.txt');
+            const text = await response.text();
+            return text.trim().split("\n").map(line => {
+                const [x, y, orientation, adversary_x, adversary_y] = line.split(',').map(Number);
+                return { x, y, orientation, adversary_x, adversary_y };
+            });
+        }
+
+        // Draw the path of the robot and the adversary
+        async function drawPath() {
+            const data = await fetchCoordinates();
+            const cells = document.querySelectorAll(".cell");
+
+            // Clear previous robot and adversary positions
+            cells.forEach(cell => {
+                const robot = cell.querySelector(".robot");
+                if (robot) cell.removeChild(robot);
+                const adversary = cell.querySelector(".adversary");
+                if (adversary) cell.removeChild(adversary);
+            });
+
+            data.forEach(({ x, y, orientation, adversary_x, adversary_y }, index) => {
+                // Draw the robot
+                const robotCell = Array.from(cells).find(c => c.dataset.x == x && c.dataset.y == y);
+                if (robotCell) {
+                    let robot = robotCell.querySelector(".robot");
+                    if (!robot) {
+                        robot = document.createElement("div");
+                        robot.classList.add("robot");
+                        robotCell.appendChild(robot);
+                    }
+                    robot.className = "robot"; // Reset classes
+                    switch (orientation) {
+                        case 1:
+                            robot.classList.add("north");
+                            break;
+                        case 2:
+                            robot.classList.add("east");
+                            break;
+                        case 3:
+                            robot.classList.add("south");
+                            break;
+                        case 4:
+                            robot.classList.add("west");
+                            break;
+                    }
+
+                    let stepCounterElement = robotCell.querySelector(".step-counter");
+                    if (!stepCounterElement) {
+                        stepCounterElement = document.createElement("div");
+                        stepCounterElement.classList.add("step-counter");
+                        robotCell.appendChild(stepCounterElement);
+                    }
+                    stepCounterElement.textContent = index + 1; // Step number
+                }
+
+                // Draw the adversary
+                const adversaryCell = Array.from(cells).find(c => c.dataset.x == adversary_x && c.dataset.y == adversary_y);
+                if (adversaryCell) {
+                    let adversary = adversaryCell.querySelector(".adversary");
+                    if (!adversary) {
+                        adversary = document.createElement("div");
+                        adversary.classList.add("adversary");
+                        adversaryCell.appendChild(adversary);
+                    }
+                }
+            });
+        }
+
+        // Initialize the board on load
+        createBoard();
+
+        // Set interval to update the board every 1 second
+        setInterval(drawPath, 1000);
+    </script>
+</body>
+</html>

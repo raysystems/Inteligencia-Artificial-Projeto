@@ -188,7 +188,7 @@ def jogar(caminho_ideal, motore, motord, gyro, sensor_cor, posicao, posicao_Mant
     estrategia1_fase1 = 0
     stunned = 0
     counter_pos_anterior = 0
-    pos_anterior = [0,0]
+    pos_anterior = [1,1]
     new_dist = init_dist
     possiveis_posicoes_torradeira = []
     torradeira = [0,0]
@@ -197,6 +197,11 @@ def jogar(caminho_ideal, motore, motord, gyro, sensor_cor, posicao, posicao_Mant
     sentiucalor = 0
     caiu_na_torradeira = 0
     ficou_preso_jogada = 0
+    eliminouposicoes = 0
+    fase2indoparadestino = 0
+    fase2coordsdestino = [0,0]
+    base = False
+    topo = False
     while (1):
 
         if (posicao[0] == 3 and posicao[1] == 5 and ir_para_manteiga > 5):
@@ -215,13 +220,7 @@ def jogar(caminho_ideal, motore, motord, gyro, sensor_cor, posicao, posicao_Mant
         elif ficou_preso_jogada == 1 and sentiucalor == 1:
             ficou_preso_jogada = 0    
         
-        if counter_pos_anterior == 0:
-            pos_anterior = [posicao[0], posicao[1]]
-            counter_pos_anterior += 1
-        elif counter_pos_anterior > 0 :
-            if pos_anterior[0] != posicao[0] or pos_anterior[1] != posicao[1]:
-                # se mudou atualizar posicao anterior
-                pos_anterior = [posicao[0], posicao[1]]
+        
         #senti o calor da torradeira
 
         if posicao[4] == 1 and estrategia1_fase1 == 1:
@@ -229,6 +228,7 @@ def jogar(caminho_ideal, motore, motord, gyro, sensor_cor, posicao, posicao_Mant
             estrategia1_fase1 = 2
             posicao[4] = 0
             sentiucalor = 1
+            print("Senti o calor da torradeira")
             #foi sentido o calor a torradeira irradia calor de uma casa nao nas diagonais portanto
             #se o robot estiver numa casa adjacente a torradeira ele sente o calor
             #calcular possiveis posicoes da torradeira
@@ -236,39 +236,153 @@ def jogar(caminho_ideal, motore, motord, gyro, sensor_cor, posicao, posicao_Mant
         
         
         
-
+        print("Estrategia 1 fase 2 IF ",estrategia1_fase1 == 2 )
+        print("Estrategia 1 fase 2 IF VALOR ",estrategia1_fase1 )
         if estrategia1_fase1 == 2:
             #vamos ir para uma possivel posicao da torradeira e mais longe do pos_bvm
             
+            if posicao[4] == 1:
+
+                #caimos na torradeira
+                print("Caiu na torradeira")
+                caiu_na_torradeira = 1
+                
+                posicao[4] = 0
+                torradeira = [posicao[0], posicao[1]]   
+                print("Torradeira ", torradeira)
+                estrategia1_fase1 = 3
+            else:
+                if dist_to_square(pos_bvm, posicao) == 1:
+                    estrategia1_fase1 = 4
+            print("len(possiveis_posicoes_torradeira) > 0 ",len(possiveis_posicoes_torradeira) > 0 )
             if len(possiveis_posicoes_torradeira) > 0:
                 #se existem possiveis posicoes da torradeira
-
-                for i in possiveis_posicoes_torradeira:
-                    print("Posicao BVM ", pos_bvm)
-                    if dist_to_square(pos_bvm, i) < 3 and i[0] != 3:
-
-                        print ("Distancia do BVM ", dist_to_square(pos_bvm, i), " para a posicao ", i)
-                        possiveis_posicoes_torradeira.pop(possiveis_posicoes_torradeira.index(i))
-                    if i[0] == pos_anterior[0] and i[1] == pos_anterior[1]:
-                        print("Removendo posicao anterior")
-                        possiveis_posicoes_torradeira.pop(possiveis_posicoes_torradeira.index(i))
-                
+                if eliminouposicoes == 0:
+                    for i in possiveis_posicoes_torradeira:
+                        print("Posicao BVM ", pos_bvm)
+                        #remover a posicao que tem o x == 4
+                        if i[0] == 4:
+                            print("Removendo posicao 4")
+                            possiveis_posicoes_torradeira.pop(possiveis_posicoes_torradeira.index(i))
+                        elif i[0] == pos_anterior[0] and i[1] == pos_anterior[1]:
+                            print("Removendo posicao anterior")
+                            possiveis_posicoes_torradeira.pop(possiveis_posicoes_torradeira.index(i))
+                    eliminouposicoes = 1
+                print("len(possiveis_posicoes_torradeira) == 0 ", len(possiveis_posicoes_torradeira) == 0)    
                 if len(possiveis_posicoes_torradeira) == 0:
                     estrategia1_fase1 = 4
                 else:
                     print("Possiveis posicoes da torradeira ", possiveis_posicoes_torradeira)
-                    x_destino = possiveis_posicoes_torradeira[0][0]
-                    y_destino = possiveis_posicoes_torradeira[0][1]
-                    possiveis_posicoes_torradeira.pop(0)
+                    if posicao[1] == 1: 
+                        #se o x do robot for 1
+                        base = True
+
+                    if posicao[1] == 6:
+                        #se o x do robot for 6
+                        topo = True
+
+                    if fase2indoparadestino == 0 and base == False and topo == False: 
+                        #ir para a posicao com menor x
+                        print("IR para menor X")
+                        menorx = 6
+                        for i in possiveis_posicoes_torradeira:
+                            if i[0] < menorx:
+                                menorx = i[0]
+                        for i in possiveis_posicoes_torradeira:
+                            if i[0] == menorx:
+                                x_destino = i[0]
+                                y_destino = i[1]
+                                fase2coordsdestino = [x_destino, y_destino]
+                                possiveis_posicoes_torradeira.pop(possiveis_posicoes_torradeira.index(i))
+
+                                fase2indoparadestino = 1
+                                break
+                        
                     
-                    caminho = calcular_rota([posicao[0], posicao[1]], [x_destino, y_destino], barreiras)
-                    caminho.pop(0)
-                    x_destino = caminho[0][0]
-                    y_destino = caminho[0][1]   
                     
                     
-                    print("Caminho ideal Torradeira: ", caminho)        
-                    print("Indo para a psol torradeira ", x_destino, y_destino)
+                    # if posicao[0] == fase2coordsdestino[0] and posicao[1] == fase2coordsdestino[1] and fase2indoparadestino > 3:
+                    #     # se ja cheguei a uma posicao possivel da torradeira e nao tem vou ver a proxima
+                    #     if len(possiveis_posicoes_torradeira) > 0:
+                    #         x_destino = possiveis_posicoes_torradeira[0][0]
+                    #         y_destino = possiveis_posicoes_torradeira[0][1]
+                    #         fase2coordsdestino = [x_destino, y_destino]
+                            
+                    #         print("Indo para a proxima possivel posicao da torradeira ", x_destino, y_destino)
+                        
+                    # elif fase2indoparadestino == 2: 
+                    #     if len(possiveis_posicoes_torradeira) > 1:
+                                
+                    #             possiveis_posicoes_torradeira.pop(0)
+                    #             x_destino = possiveis_posicoes_torradeira[0][0]
+                    #             y_destino = possiveis_posicoes_torradeira[0][1]
+
+                    #     else:
+                    #         estrategia1_fase1 = 4
+                    
+
+                    #isto para quando o robot esta entre 2 e 5  
+                    if fase2indoparadestino == 2 and base == False:
+                        x_destino = posicao[0] - 1
+                        y_destino = posicao[1]
+                        print("Suposicao X 1", x_destino, " Y ", y_destino)
+                        
+                    if fase2indoparadestino == 3 and base == False:
+                        x_destino = posicao[0] + 1
+                        y_destino = posicao[1]
+                        print("Suposicao X 2", x_destino, " Y ", y_destino)
+
+                    if fase2indoparadestino == 4 and base == False:
+                        x_destino = posicao[0]
+                        y_destino = posicao[1] + 1
+                        print("Suposicao X 3", x_destino, " Y ", y_destino)
+
+                    if fase2indoparadestino == 5 and base == False:
+                        x_destino = posicao[0] - 1
+                        y_destino = posicao[1]
+                        print("Suposicao X 4", x_destino, " Y ", y_destino)    
+                    if fase2indoparadestino == 6 and base == False:
+                        x_destino = posicao[0] + 1
+                        y_destino = posicao[1]
+                        print("Suposicao X 4", x_destino, " Y ", y_destino)  
+
+                    # 5 vezes
+                    print("fase2indoparadestino ", fase2indoparadestino)    
+                    if fase2indoparadestino == 0 and base == True:
+                        x_destino = posicao[0] - 1
+                        y_destino = posicao[1]
+                        print("Suposicao X BASE 1", x_destino, " Y ", y_destino)
+                    if fase2indoparadestino == 1 and base == True:
+                        x_destino = posicao[0] + 1
+                        y_destino = posicao[1]
+                        print("Suposicao X BASE 2", x_destino, " Y ", y_destino)
+                    print("fase2indoparadestino == 2 and base == True ", fase2indoparadestino == 2 and base == True)
+                    if fase2indoparadestino == 2 and base == True:
+                        x_destino = posicao[0] - 1
+                        y_destino = posicao[1]
+                        print("Suposicao X BASE 3", x_destino, " Y ", y_destino)
+                    if fase2indoparadestino == 3 and base == True:
+                        x_destino = posicao[0] + 1
+                        y_destino = posicao[1]
+                        print("Suposicao X BASE 4", x_destino, " Y ", y_destino)
+                    if fase2indoparadestino == 4 and base == True:
+                        x_destino = posicao[0] - 1
+                        y_destino = posicao[1]
+                        print("Suposicao X BASE 5", x_destino, " Y ", y_destino)
+                    if fase2indoparadestino == 5 and base == True:
+                        x_destino = posicao[0]
+                        y_destino = posicao[1] + 1
+                        print("Suposicao X BASE 6", x_destino, " Y ", y_destino)
+                    if fase2indoparadestino == 6 and base == True:
+                        x_destino = posicao[0] - 1
+                        y_destino = posicao[1]
+                        print("Suposicao X BASE 7", x_destino, " Y ", y_destino)    
+                    if fase2indoparadestino == 7 and base == True:
+                        x_destino = posicao[0] + 1
+                        y_destino = posicao[1]
+                        print("Suposicao X BASE 8", x_destino, " Y ", y_destino)  
+                    
+                    fase2indoparadestino = fase2indoparadestino + 1
                     
             else:
                 estrategia1_fase1 = 3
@@ -321,19 +435,10 @@ def jogar(caminho_ideal, motore, motord, gyro, sensor_cor, posicao, posicao_Mant
                 x_destino = caminho[0][0]
                 y_destino = caminho[0][1]
                 print("Caminho ideal Fase 4: ", caminho) 
-        if estrategia1_fase1 == 2:
-           
-            print("Estrategia 1 fase 2 IR PARA A TORRADEIRA")
-            if posicao[4] == 1:
 
-                #caimos na torradeira
-                print("Caiu na torradeira")
-                caiu_na_torradeira = 1
-                
-                posicao[4] = 0
-                torradeira = [posicao[0], posicao[1]]   
-                print("Torradeira ", torradeira)
-                estrategia1_fase1 = 3 
+           
+        
+             
 
         if estrategia1_fase1 == 3 and caiu_na_torradeira == 0 and stunned == 0:
             print("Estrategia 1 fase 3 MATAR BVM")
@@ -356,16 +461,22 @@ def jogar(caminho_ideal, motore, motord, gyro, sensor_cor, posicao, posicao_Mant
                 x_destino = caminho[0][0]
                 y_destino = caminho[0][1]
                 print("Caminho ideal Fase 3: ", caminho)
-        else:
-            print("Estrategia 1 fase 3")
-            print("Nao foi possivel matar o BVM, estou na torradeira")
+       
             
         if stunned != 1:
             # criar funcao ir para coords. x_destino, y_destino
 
             
             if caiu_na_torradeira != 1:
+                pos_anterior = [posicao[0], posicao[1]]
                 irparaCoords(x_destino,y_destino, posicao, motore, motord, gyro, sensor_cor)
+                
+               
+                    
+                print("Posicao anterior ", pos_anterior)
+                print("Posicao atual ", posicao)
+                if posicao[4] == 0 and estrategia1_fase1 == 2:
+                    possiveis_posicoes_torradeira.pop
             else:
                 caiu_na_torradeira = 0
                 ficou_preso_jogada = 1
@@ -376,8 +487,12 @@ def jogar(caminho_ideal, motore, motord, gyro, sensor_cor, posicao, posicao_Mant
             wait(2000)
 
         wait(1000)
-        menor_caminho(pos_bvm, posicao)
-        print("bvm ", pos_bvm)
+        if (posicao[3] != 1):
+            menor_caminho(pos_bvm, posicao)
+            print("bvm ", pos_bvm)
+        else:
+            print("bvm nao anda pois teve uma barreira")
+
         print("posicao ", posicao)
         # Se BVM chegar até à manteiga o robot perde
         if (pos_bvm[0] == posicao_Manteiga[0] and pos_bvm[1] == posicao_Manteiga[1]):
@@ -423,7 +538,8 @@ def jogar(caminho_ideal, motore, motord, gyro, sensor_cor, posicao, posicao_Mant
             # a barreira foi encontrada e temos que adiconar a barreira à lista de barreiras
             # para isso e necessario ter em consideracao a posicao do robot e que ele ia
             # para a posicao da barreira
-
+            if estrategia1_fase1 == 2:
+                estrategia1_fase1 = 4
             posicao[3] = 0
             # temos que ver com base no destino e orientacao do robot qual seria a nova coordenada
             # para onde ele ia
@@ -477,7 +593,7 @@ def jogar(caminho_ideal, motore, motord, gyro, sensor_cor, posicao, posicao_Mant
             if (posicao[0] != 3 and posicao[1] != 1 and ir_para_manteiga > 5):
                 x_destino = 3
                 y_destino = 1
-            if (posicao[0] == 3 and posicao[1] == 1 ):
+            if (posicao[0] == 3 and posicao[1] == 1 and estrategia1_fase1 != 2):
                 estrategia1_fase1 = 1
             if (posicao[0] == 3 and posicao[1] <= 5 and ir_para_manteiga > 5 and estrategia1_fase1 == 1):
                 x_destino = 3
@@ -501,7 +617,7 @@ def jogar(caminho_ideal, motore, motord, gyro, sensor_cor, posicao, posicao_Mant
             if (posicao[0] != 3 and posicao[1] != 1 and ir_para_manteiga > 5):
                 x_destino = 3
                 y_destino = 1
-            if (posicao[0] == 3 and posicao[1] == 1 ):
+            if (posicao[0] == 3 and posicao[1] == 1 and estrategia1_fase1 != 2):
                 estrategia1_fase1 = 1
             if (posicao[0] == 3 and posicao[1] <= 5 and ir_para_manteiga > 5 and estrategia1_fase1 == 1):
                 x_destino = 3
@@ -529,7 +645,12 @@ def jogar(caminho_ideal, motore, motord, gyro, sensor_cor, posicao, posicao_Mant
 
         
         
-
+        #escreve a posicao atual no ficheiro
+        #x,y,orientacao
+        f = open("webserver/posicoes.txt", "a")
+        f.write("\n" + str(posicao[0]) + "," + str(posicao[1]) + "," + str(posicao[2]) + "," + str(pos_bvm[0]) + "," + str(pos_bvm[1]) + "\n")
+        f.close()
+        wait(1000)
         new_dist = waitforinput(ev3, sensor_cor)
         
        

@@ -10,6 +10,7 @@ def verificarExisteBarreiraQ(sensor_cor):
 
 def verificarExisteCalorTorradeira(sensor_cor, posicao):
     if sensor_cor.color() == Color.BLUE:
+        print("FLAG AZUL ATIVA")
         posicao[4] = 1
         return 1
     
@@ -269,6 +270,7 @@ def frente(motore, motord, posicao, sensor_cor):
     if posicao[2] == 1 and posicao[1] <= 5:
         motore.run(180)
         motord.run(180)
+        wait(800)
         while sensor_cor.color() != Color.BLACK:
             if verificarExisteCalorTorradeira(sensor_cor, posicao) == 1:
                 break
@@ -290,6 +292,7 @@ def frente(motore, motord, posicao, sensor_cor):
     elif posicao[2] == 2 and posicao[0] <= 5:
         motore.run(180)
         motord.run(180)
+        wait(800)
         while sensor_cor.color() != Color.BLACK:
             if verificarExisteCalorTorradeira(sensor_cor, posicao) == 1:
                 break
@@ -311,6 +314,7 @@ def frente(motore, motord, posicao, sensor_cor):
     elif posicao[2] == 3 and posicao[1] > 1:
         motore.run(180)
         motord.run(180)
+        wait(800)
         while sensor_cor.color() != Color.BLACK:
             if verificarExisteCalorTorradeira(sensor_cor, posicao) == 1:
                 break
@@ -332,6 +336,7 @@ def frente(motore, motord, posicao, sensor_cor):
     elif posicao[2] == 4 and posicao[0] > 1:
         motore.run(180)
         motord.run(180)
+        wait(800)
         while sensor_cor.color() != Color.BLACK:
             if verificarExisteCalorTorradeira(sensor_cor, posicao) == 1:
                 break
