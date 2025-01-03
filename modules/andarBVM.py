@@ -231,8 +231,7 @@ def jogar(caminho_ideal, motore, motord, gyro, sensor_cor, posicao, posicao_Mant
 
 
             
-        if posicao[4] == 1 and estrategia1_fase1 == 1 and sentiucalor == 0 or posicao[4] == 1 and basecasoespecial == True and sentiucalor == 0 :
-            calculaPossiveisPsolsTorradeira(posicao, possiveis_posicoes_torradeira,pos_anterior)
+        if posicao[4] == 1 and estrategia1_fase1 == 1 and sentiucalor == 0 or posicao[4] == 1 and sentiucalor == 0 :
             estrategia1_fase1 = 2
             posicao[4] = 0
             sentiucalor = 1
@@ -254,80 +253,128 @@ def jogar(caminho_ideal, motore, motord, gyro, sensor_cor, posicao, posicao_Mant
         if estrategia1_fase1 == 2:
             #vamos ir para uma possivel posicao da torradeira e mais longe do pos_bvm
             print("fase2indoparadestino   ", fase2indoparadestino)
-            if fase2indoparadestino == 0:
-                x_destino = posicao[0] - 1
-                y_destino = posicao[1]
-            
-            if fase2indoparadestino == 1:
-                if pos_bvm[0] <= 4 and posicao[1] < 6:
-                    x_destino = posicao[0]
-                    y_destino = posicao[1] + 1
-                    parainc = 1
-                    fase2indoparadestino = -1
-                else:
-                    x_destino = posicao[0] - 1
-                    y_destino = posicao[1]
 
-            if fase2indoparadestino == 2:
-                if pos_bvm[0] <= 4:
-                    x_destino = posicao[0]
-                    y_destino = posicao[1] + 1
-                    parainc = 1
-                    fase2indoparadestino = -1
-                else:
-                    x_destino = posicao[0] + 1
-                    y_destino = posicao[1]
-            if fase2indoparadestino == 3:
-                if pos_bvm[0] <= 4:
-                    x_destino = posicao[0]
-                    y_destino = posicao[1] + 1
-                    parainc = 1
-                    fase2indoparadestino = -1
-                else:
+            if basecasoespecial == False:
+                if fase2indoparadestino == 0:
                     x_destino = posicao[0] - 1
-                    y_destino = posicao[1]
-            if fase2indoparadestino == 4:
-                if pos_bvm[0] <= 4:
-                    x_destino = posicao[0]
-                    y_destino = posicao[1] + 1
-                    parainc = 1
-                    fase2indoparadestino = -1
-                else:
-                    x_destino = posicao[0] + 1
-                    y_destino = posicao[1]
-
-            if fase2indoparadestino == 5:
-                if pos_bvm[0] <= 4:
-                    x_destino = posicao[0]
-                    y_destino = posicao[1] + 1
-                    parainc = 1
-                    fase2indoparadestino = -1
-                else:
-                    x_destino = posicao[0] - 1
-                    y_destino = posicao[1]
-
-            if fase2indoparadestino == 6:
-                print
-                if pos_bvm[0] <= 4:
-                    x_destino = posicao[0]
-                    y_destino = posicao[1] + 1
-                    parainc = 1
-                    fase2indoparadestino = -1
-                else:
-                    x_destino = posicao[0] + 1
                     y_destino = posicao[1]
                 
+                if fase2indoparadestino == 1:
+                    if pos_bvm[0] <= 4 and posicao[1] < 6:
+                        x_destino = posicao[0]
+                        y_destino = posicao[1] + 1
+                        parainc = 1
+                        fase2indoparadestino = -1
+                    else:
+                        x_destino = posicao[0] - 1
+                        y_destino = posicao[1]
 
-            if fase2indoparadestino == -2:
-                if posicao[0] - 1 >= 1:
+                if fase2indoparadestino == 2:
+                    if pos_bvm[0] <= 4:
+                        x_destino = posicao[0]
+                        y_destino = posicao[1] + 1
+                        parainc = 1
+                        fase2indoparadestino = -1
+                    else:
+                        x_destino = posicao[0] + 1
+                        y_destino = posicao[1]
+                if fase2indoparadestino == 3:
+                    if pos_bvm[0] <= 4:
+                        x_destino = posicao[0]
+                        y_destino = posicao[1] + 1
+                        parainc = 1
+                        fase2indoparadestino = -1
+                    else:
+                        x_destino = posicao[0] - 1
+                        y_destino = posicao[1]
+                if fase2indoparadestino == 4:
+                    if pos_bvm[0] <= 4:
+                        x_destino = posicao[0]
+                        y_destino = posicao[1] + 1
+                        parainc = 1
+                        fase2indoparadestino = -1
+                    else:
+                        x_destino = posicao[0] + 1
+                        y_destino = posicao[1]
+
+                if fase2indoparadestino == 5:
+                    if pos_bvm[0] <= 4:
+                        x_destino = posicao[0]
+                        y_destino = posicao[1] + 1
+                        parainc = 1
+                        fase2indoparadestino = -1
+                    else:
+                        x_destino = posicao[0] - 1
+                        y_destino = posicao[1]
+
+                if fase2indoparadestino == 6:
+                    print
+                    if pos_bvm[0] <= 4:
+                        x_destino = posicao[0]
+                        y_destino = posicao[1] + 1
+                        parainc = 1
+                        fase2indoparadestino = -1
+                    else:
+                        x_destino = posicao[0] + 1
+                        y_destino = posicao[1]
+                    
+
+                if fase2indoparadestino == -2:
+                    if posicao[0] - 1 >= 1:
+                        x_destino = posicao[0] - 1
+                        y_destino = posicao[1]
+                    else:
+                        x_destino = posicao[0] + 1
+                        y_destino = posicao[1]
+                print("X destino ", x_destino)
+                print("Y destino ", y_destino)
+                print("COORDS FASE 2")
+            else:
+                print("fase2indoparadestino BASE ESPECIAL", fase2indoparadestino)
+                if fase2indoparadestino == 0:
                     x_destino = posicao[0] - 1
                     y_destino = posicao[1]
-                else:
+                    
+                if fase2indoparadestino == 1:
                     x_destino = posicao[0] + 1
+                    y_destino = posicao[1] 
+                    
+                if fase2indoparadestino == 2:
+                    x_destino = posicao[0] - 1
                     y_destino = posicao[1]
-            print("X destino ", x_destino)
-            print("Y destino ", y_destino)
-            print("COORDS FASE 2")
+                   
+                if fase2indoparadestino == 3:
+                    x_destino = posicao[0] + 1
+                    y_destino = posicao[1] 
+                    
+                if fase2indoparadestino == 4:
+                    x_destino = posicao[0] - 1
+                    y_destino = posicao[1]
+                    
+                if fase2indoparadestino == 5:
+                    x_destino = posicao[0] + 1
+                    y_destino = posicao[1] 
+                if fase2indoparadestino == 6:
+                    x_destino = posicao[0] - 1
+                    y_destino = posicao[1] 
+                if fase2indoparadestino == 7:
+                    x_destino = posicao[0] 
+                    y_destino = posicao[1] + 1
+                if fase2indoparadestino == 8:
+                    if posicao[0] - 1 >= 1:
+                        x_destino = posicao[0] - 1
+                        y_destino = posicao[1]
+                    else:
+                        x_destino = posicao[0] + 1
+                        y_destino = posicao[1]
+                if fase2indoparadestino == 9:
+                    if posicao[0] - 1 >= 1:
+                        x_destino = posicao[0] - 1
+                        y_destino = posicao[1]
+                    else:
+                        x_destino = posicao[0] + 1
+                        y_destino = posicao[1]
+                    
             if parainc == 0:
                 fase2indoparadestino += 1
             elif parainc == 1:
@@ -491,7 +538,7 @@ def jogar(caminho_ideal, motore, motord, gyro, sensor_cor, posicao, posicao_Mant
                 estrategia1_fase1 = 4
             if estrategia1_fase1 == 1 and posicao[0] == 3:
                 esqueceaideia = 1
-                print("Caguei")
+                
                 estrategia1_fase1 = 4
             posicao[3] = 0
             # temos que ver com base no destino e orientacao do robot qual seria a nova coordenada
