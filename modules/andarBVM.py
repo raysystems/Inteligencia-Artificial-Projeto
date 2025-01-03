@@ -388,16 +388,23 @@ def jogar(caminho_ideal, motore, motord, gyro, sensor_cor, posicao, posicao_Mant
                 x_destino = posicao[0] - 1
                 y_destino = posicao[1]
                 matarbmv = 1
+                print("matarbmv 1")
             elif matarbmv == 1:
                 x_destino = posicao[0] + 1
                 y_destino = posicao[1]
                 matarbmv = 2
+                print("matarbmv 2")
             elif matarbmv == 2:
                 x_destino = posicao[0] - 1
                 y_destino = posicao[1]
                 matarbmv = 3
+                print("matarbmv 3")
             else:
-                print("Desisto")
+                for x in range(10):
+                    print("Desisto FASE 3")
+                x_destino = posicao[0] - 1
+                y_destino = posicao[1]
+                estrategia1_fase1 = 4
                 ev3.screen.print("Desisto")
 
                 
@@ -540,7 +547,7 @@ def jogar(caminho_ideal, motore, motord, gyro, sensor_cor, posicao, posicao_Mant
                 x_destino = 3
                 y_destino = 1
                 
-            if (posicao[0] == 3 and posicao[1] == 1 and estrategia1_fase1 != 2 and esqueceaideia == 0):
+            if (posicao[0] == 3 and posicao[1] == 1 and estrategia1_fase1 != 2 and esqueceaideia == 0 and ir_para_manteiga > 5):
                 estrategia1_fase1 = 1
             if (posicao[0] == 3 and posicao[1] <= 5 and ir_para_manteiga > 5 and estrategia1_fase1 == 1):
                 x_destino = 3
@@ -567,7 +574,7 @@ def jogar(caminho_ideal, motore, motord, gyro, sensor_cor, posicao, posicao_Mant
             if (posicao[0] != 3 and posicao[1] != 1 and ir_para_manteiga > 5):
                 x_destino = 3
                 y_destino = 1
-            if (posicao[0] == 3 and posicao[1] == 1 and estrategia1_fase1 != 2):
+            if (posicao[0] == 3 and posicao[1] == 1 and estrategia1_fase1 != 2 and ir_para_manteiga > 5):
                 estrategia1_fase1 = 1
             if (posicao[0] == 3 and posicao[1] <= 5 and ir_para_manteiga > 5 and estrategia1_fase1 == 1):
                 x_destino = 3
