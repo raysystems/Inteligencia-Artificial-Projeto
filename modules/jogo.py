@@ -2,6 +2,8 @@ from modules.andar import frente, esquerda, direita, virar_180
 from modules.googlemaps import calcular_rota
 from pybricks.parameters import Color
 from pybricks.tools import wait
+
+#funcao para fazer o BVM se mover em direcao ao homem tosta
 def menor_caminho(pos_bvm, posicao):
    
     x_inicial, y_inicial = pos_bvm[0], pos_bvm[1]
@@ -26,7 +28,7 @@ def menor_caminho(pos_bvm, posicao):
     pos_bvm[0] = x_inicial
     pos_bvm[1] = y_inicial
 
-
+# funcao para o HT se movimentar
 def irparaCoords(x_destino, y_destino, posicao, motore, motord, gyro, sensor_cor):
     #primeiro ver a orientacao do robot
     #caso norte
@@ -98,7 +100,10 @@ def irparaCoords(x_destino, y_destino, posicao, motore, motord, gyro, sensor_cor
     motord.stop()
     
 
-
+# funcao para receber a distancia do homem tosta à manteiga
+# cor vermelha = 2
+# cor azul = 1
+# cor preta = -1
 def waitforinput(ev3,sensor_cor):
 
     #distância para cada cor
@@ -136,6 +141,7 @@ def waitforinput(ev3,sensor_cor):
     
     return total_dist
 
+# calcula a distancia em modulo entre duas posicoes
 def dist_to_square(posicao, square): #devolve dist do robô até o quadrado passado como arg
     return abs(posicao[0]-square[0])+abs(posicao[1]-square[1])
 
@@ -161,6 +167,9 @@ def remove_solucoes_nao_otimas(posicao, new_dist, distancia_antiga, sols):
     print("Soluções possíveis: ", sols)
     return sols
 
+
+
+# funcao para calcular as possiveis posicoes da torradeira
 def calculaPossiveisPsolsTorradeira(posicao, possiveis_posicoes,posicao_anterior):
     if posicao[0] > 1:
         possiveis_posicoes.append([posicao[0]-1, posicao[1]])
@@ -180,6 +189,7 @@ def calculaPossiveisPsolsTorradeira(posicao, possiveis_posicoes,posicao_anterior
         if i == posicao_anterior:    
             possiveis_posicoes.pop(possiveis_posicoes.index(i))
 
+# funcao para calcular a melhor jogada
 def jogar(caminho_ideal, motore, motord, gyro, sensor_cor, posicao, posicao_Manteiga, pos_bvm, posicao_Torradeira,ev3, init_dist, psols, distancia_antiga, barreiras,ir_para_manteiga):
     x_destino = posicao_Manteiga[0]
     y_destino = posicao_Manteiga[1]
