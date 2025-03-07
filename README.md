@@ -12,5 +12,5 @@ The goal was to make the robot as strategic and intelligent as possible.
 
 ## 📜 Grade Received
 
-The project was evaluated by **Professor Eduardo Ferme** from **University of Madeira**, and the grade received was **18**.  
+The project was evaluated by **Professor Eduardo Ferme** from **University of Madeira**, and the grade received was **18 / 20**.  
 Special thanks to the Professor!
